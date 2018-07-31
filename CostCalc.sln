@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CostCalc.API", "CostCalc.API\CostCalc.API.csproj", "{BE8640CC-9D62-4054-849B-77BF5F63BA1A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CostCalc.Web", "CostCalc.Web\CostCalc.Web.csproj", "{337F1D7C-9AA5-4DB2-A490-F1AF3E40BF43}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CostCalc.BLL", "CostCalc.BLL\CostCalc.BLL.csproj", "{5A75E1BB-6649-4A04-ADE7-1FE20F646C39}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CostCalc.DAL", "CostCalc.DAL\CostCalc.DAL.csproj", "{8B46BC04-385C-440B-BB04-0A8FFC142BBF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CostCalc.Domain", "CostCalc.Domain\CostCalc.Domain.csproj", "{C6D80A81-D091-48A0-8910-766111F67539}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CostCalc.Helper", "CostCalc.Helper\CostCalc.Helper.csproj", "{5B916978-1095-4C49-9B58-0ABD40B716B2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BE8640CC-9D62-4054-849B-77BF5F63BA1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE8640CC-9D62-4054-849B-77BF5F63BA1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE8640CC-9D62-4054-849B-77BF5F63BA1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE8640CC-9D62-4054-849B-77BF5F63BA1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{337F1D7C-9AA5-4DB2-A490-F1AF3E40BF43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{337F1D7C-9AA5-4DB2-A490-F1AF3E40BF43}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{337F1D7C-9AA5-4DB2-A490-F1AF3E40BF43}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{337F1D7C-9AA5-4DB2-A490-F1AF3E40BF43}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A75E1BB-6649-4A04-ADE7-1FE20F646C39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A75E1BB-6649-4A04-ADE7-1FE20F646C39}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A75E1BB-6649-4A04-ADE7-1FE20F646C39}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A75E1BB-6649-4A04-ADE7-1FE20F646C39}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B46BC04-385C-440B-BB04-0A8FFC142BBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B46BC04-385C-440B-BB04-0A8FFC142BBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B46BC04-385C-440B-BB04-0A8FFC142BBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B46BC04-385C-440B-BB04-0A8FFC142BBF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6D80A81-D091-48A0-8910-766111F67539}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6D80A81-D091-48A0-8910-766111F67539}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6D80A81-D091-48A0-8910-766111F67539}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6D80A81-D091-48A0-8910-766111F67539}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B916978-1095-4C49-9B58-0ABD40B716B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B916978-1095-4C49-9B58-0ABD40B716B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B916978-1095-4C49-9B58-0ABD40B716B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B916978-1095-4C49-9B58-0ABD40B716B2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
