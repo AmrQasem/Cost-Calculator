@@ -22,11 +22,11 @@ namespace CostCalc.BLL.Services
         public QuotationDM GetQuotationForCategory(QuotationDM domainModel)
         {
             //Load Data needed for calculations
-            //domainModel.Category = _QuotationRepo.GetCategory(domainModel.Category.ID );
+            domainModel.CategoryDMList = _QuotationRepo.GetCategory(domainModel.ID);
             //Calculate quotation in Domain
-            domainModel.CalculateQuotation();
+            domainModel.AddCalculatedQuotation();
             //Store calculations
-            _QuotationRepo.AddCalculatedQuotation(domainModel);
+            _QuotationRepo.Add(domainModel);
             //return calculated domain
             return domainModel;
         }

@@ -18,14 +18,14 @@ namespace CostCalc.DAL.EF
         public int FromLangID { get; set; }
         public int ToLangID { get; set; }
         public decimal WordCount { get; set; }
-        public int CategoryID { get; set; }
         public decimal Price { get; set; }
         public string IP_Address { get; set; }
         public System.DateTime StartDate { get; set; }
         public System.DateTime EndDate { get; set; }
         public decimal NumberOfDays { get; set; }
+        public decimal StandardPrice { get; set; }
+        public decimal PremiumPrice { get; set; }
     
-        public virtual Category Category { get; set; }
         public virtual Language Language { get; set; }
         public virtual Language Language1 { get; set; }
     }

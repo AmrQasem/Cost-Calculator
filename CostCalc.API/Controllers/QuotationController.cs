@@ -20,40 +20,22 @@ namespace CostCalc.API.Controllers
         {
             _QuotationService = new QuotationService(globalErrors);
         }
-        // GET api/<controller>
-        public IEnumerable<string> Get()
+        [HttpPost]
+        // POST api/quotation
+        public HttpResponseMessage RequestQuotation([FromBody]QuotationVM dataModel)
         {
-            return new string[] { "value1", "value2" };
-        }
+            try
+            {
+                QuotationDM domainModel = dataModel.MapVM_DM();
+                domainModel = _QuotationService.GetQuotationForCategory(domainModel);
 
-        // GET api/<controller>/5
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/<controller>
-        public void Post([FromBody]string value)
-        {
-        }
-
-        // PUT api/<controller>/5
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE api/<controller>/5
-        public void Delete(int id)
-        {
-        }
-
-        public HttpResponseMessage RequestQuotation(QuotationVM dataModel)
-        {
-            QuotationDM domainModel = dataModel.MapVM_DM();
-            domainModel = _QuotationService.GetQuotationForCategory(domainModel);
-
-            var response = Request.CreateResponse(HttpStatusCode.OK, domainModel);
-            return response;
+                var msg = Request.CreateResponse(HttpStatusCode.Created, domainModel);
+                return msg;
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+            }
         }
     }
 }

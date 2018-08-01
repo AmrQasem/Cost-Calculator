@@ -13,7 +13,6 @@ namespace CostCalc.API.DTO
         public int FromLangID { get; set; }
         public int ToLangID { get; set; }
         public decimal WordCount { get; set; }
-        public int CategoryID { get; set; }
         public decimal Price { get; set; }
         public string IP_Address { get; set; }
         public System.DateTime StartDate { get; set; }
@@ -30,7 +29,6 @@ namespace CostCalc.API.DTO
             FromLangID = job.FromLangID;
             ToLangID = job.ToLangID;
             WordCount = job.WordCount;
-            CategoryID = job.CategoryID;
             Price = job.Price;
             IP_Address = job.IP_Address;
             StartDate = job.StartDate;
@@ -46,7 +44,6 @@ namespace CostCalc.API.DTO
             obj.FromLangID = FromLangID;
             obj.ToLangID = ToLangID;
             obj.WordCount = WordCount;
-            obj.CategoryID = CategoryID;
             obj.Price = Price;
             obj.IP_Address = IP_Address;
             obj.StartDate = StartDate;

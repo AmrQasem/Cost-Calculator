@@ -14,18 +14,9 @@ namespace CostCalc.DAL.EF
     
     public partial class Category
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Category()
-        {
-            this.Jobs = new HashSet<Job>();
-        }
-    
         public int ID { get; set; }
         public string CategoryName { get; set; }
-        public decimal CategoryPrice { get; set; }
-        public int Quantity { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Job> Jobs { get; set; }
+        public decimal UnitPrice { get; set; }
+        public int WorkRate { get; set; }
     }
 }

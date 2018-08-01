@@ -4,15 +4,15 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="CostCalculatorDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="CostCalculatorDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Categories">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CategoryName" Type="nvarchar" MaxLength="150" Nullable="false" />
-          <Property Name="CategoryPrice" Type="decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="Quantity" Type="int" Nullable="false" />
+          <Property Name="UnitPrice" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="WorkRate" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Jobs">
           <Key>
@@ -22,12 +22,13 @@
           <Property Name="FromLangID" Type="int" Nullable="false" />
           <Property Name="ToLangID" Type="int" Nullable="false" />
           <Property Name="WordCount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="CategoryID" Type="int" Nullable="false" />
           <Property Name="Price" Type="decimal" Precision="18" Scale="3" Nullable="false" />
           <Property Name="IP_Address" Type="nvarchar" MaxLength="150" />
           <Property Name="StartDate" Type="date" Nullable="false" />
           <Property Name="EndDate" Type="date" Nullable="false" />
           <Property Name="NumberOfDays" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="StandardPrice" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+          <Property Name="PremiumPrice" Type="decimal" Precision="18" Scale="3" Nullable="false" />
         </EntityType>
         <EntityType Name="Languages">
           <Key>
@@ -36,19 +37,7 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
         </EntityType>
-        <Association Name="FK_Jobs_Categories">
-          <End Role="Categories" Type="Self.Categories" Multiplicity="1" />
-          <End Role="Jobs" Type="Self.Jobs" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Categories">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Jobs">
-              <PropertyRef Name="CategoryID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Jobs_LangFrom">
+        <Association Name="FK_Jobs_LanguagesFrom">
           <End Role="Languages" Type="Self.Languages" Multiplicity="1" />
           <End Role="Jobs" Type="Self.Jobs" Multiplicity="*" />
           <ReferentialConstraint>
@@ -60,7 +49,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Jobs_LangsTo">
+        <Association Name="FK_Jobs_LanguagesTo">
           <End Role="Languages" Type="Self.Languages" Multiplicity="1" />
           <End Role="Jobs" Type="Self.Jobs" Multiplicity="*" />
           <ReferentialConstraint>
@@ -76,33 +65,40 @@
           <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Jobs" EntityType="Self.Jobs" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Languages" EntityType="Self.Languages" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_Jobs_Categories" Association="Self.FK_Jobs_Categories">
-            <End Role="Categories" EntitySet="Categories" />
-            <End Role="Jobs" EntitySet="Jobs" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Jobs_LangFrom" Association="Self.FK_Jobs_LangFrom">
+          <AssociationSet Name="FK_Jobs_LanguagesFrom" Association="Self.FK_Jobs_LanguagesFrom">
             <End Role="Languages" EntitySet="Languages" />
             <End Role="Jobs" EntitySet="Jobs" />
           </AssociationSet>
-          <AssociationSet Name="FK_Jobs_LangsTo" Association="Self.FK_Jobs_LangsTo">
+          <AssociationSet Name="FK_Jobs_LanguagesTo" Association="Self.FK_Jobs_LanguagesTo">
             <End Role="Languages" EntitySet="Languages" />
             <End Role="Jobs" EntitySet="Jobs" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="CostCalculatorDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="CostCalculatorDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Categories" EntityType="CostCalculatorDBModel.Category" />
+          <EntitySet Name="Jobs" EntityType="CostCalculatorDBModel.Job" />
+          <EntitySet Name="Languages" EntityType="CostCalculatorDBModel.Language" />
+          <AssociationSet Name="FK_Jobs_LanguagesFrom" Association="CostCalculatorDBModel.FK_Jobs_LanguagesFrom">
+            <End Role="Language" EntitySet="Languages" />
+            <End Role="Job" EntitySet="Jobs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Jobs_LanguagesTo" Association="CostCalculatorDBModel.FK_Jobs_LanguagesTo">
+            <End Role="Language" EntitySet="Languages" />
+            <End Role="Job" EntitySet="Jobs" />
+          </AssociationSet>
+        </EntityContainer>
         <EntityType Name="Category">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CategoryName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="CategoryPrice" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="Quantity" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Jobs" Relationship="Self.FK_Jobs_Categories" FromRole="Categories" ToRole="Jobs" />
+          <Property Name="CategoryName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="UnitPrice" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="WorkRate" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="Job">
           <Key>
@@ -111,80 +107,51 @@
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="FromLangID" Type="Int32" Nullable="false" />
           <Property Name="ToLangID" Type="Int32" Nullable="false" />
-          <Property Name="WordCount" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="CategoryID" Type="Int32" Nullable="false" />
-          <Property Name="Price" Type="Decimal" Precision="18" Scale="3" Nullable="false" />
+          <Property Name="WordCount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="Price" Type="Decimal" Nullable="false" Precision="18" Scale="3" />
           <Property Name="IP_Address" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="NumberOfDays" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
-          <NavigationProperty Name="Category" Relationship="Self.FK_Jobs_Categories" FromRole="Jobs" ToRole="Categories" />
-          <NavigationProperty Name="Language" Relationship="Self.FK_Jobs_LangFrom" FromRole="Jobs" ToRole="Languages" />
-          <NavigationProperty Name="Language1" Relationship="Self.FK_Jobs_LangsTo" FromRole="Jobs" ToRole="Languages" />
+          <Property Name="NumberOfDays" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="StandardPrice" Type="Decimal" Nullable="false" Precision="18" Scale="3" />
+          <Property Name="PremiumPrice" Type="Decimal" Nullable="false" Precision="18" Scale="3" />
+          <NavigationProperty Name="Language" Relationship="CostCalculatorDBModel.FK_Jobs_LanguagesFrom" FromRole="Job" ToRole="Language" />
+          <NavigationProperty Name="Language1" Relationship="CostCalculatorDBModel.FK_Jobs_LanguagesTo" FromRole="Job" ToRole="Language" />
         </EntityType>
         <EntityType Name="Language">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Jobs" Relationship="Self.FK_Jobs_LangFrom" FromRole="Languages" ToRole="Jobs" />
-          <NavigationProperty Name="Jobs1" Relationship="Self.FK_Jobs_LangsTo" FromRole="Languages" ToRole="Jobs" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Jobs" Relationship="CostCalculatorDBModel.FK_Jobs_LanguagesFrom" FromRole="Language" ToRole="Job" />
+          <NavigationProperty Name="Jobs1" Relationship="CostCalculatorDBModel.FK_Jobs_LanguagesTo" FromRole="Language" ToRole="Job" />
         </EntityType>
-        <Association Name="FK_Jobs_Categories">
-          <End Role="Categories" Type="Self.Category" Multiplicity="1" />
-          <End Role="Jobs" Type="Self.Job" Multiplicity="*" />
+        <Association Name="FK_Jobs_LanguagesFrom">
+          <End Type="CostCalculatorDBModel.Language" Role="Language" Multiplicity="1" />
+          <End Type="CostCalculatorDBModel.Job" Role="Job" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Categories">
+            <Principal Role="Language">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="Jobs">
-              <PropertyRef Name="CategoryID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Jobs_LangFrom">
-          <End Role="Languages" Type="Self.Language" Multiplicity="1" />
-          <End Role="Jobs" Type="Self.Job" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Languages">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Jobs">
+            <Dependent Role="Job">
               <PropertyRef Name="FromLangID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Jobs_LangsTo">
-          <End Role="Languages" Type="Self.Language" Multiplicity="1" />
-          <End Role="Jobs" Type="Self.Job" Multiplicity="*" />
+        <Association Name="FK_Jobs_LanguagesTo">
+          <End Type="CostCalculatorDBModel.Language" Role="Language" Multiplicity="1" />
+          <End Type="CostCalculatorDBModel.Job" Role="Job" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Languages">
+            <Principal Role="Language">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="Jobs">
+            <Dependent Role="Job">
               <PropertyRef Name="ToLangID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="CostCalculatorDBEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Categories" EntityType="Self.Category" />
-          <EntitySet Name="Jobs" EntityType="Self.Job" />
-          <EntitySet Name="Languages" EntityType="Self.Language" />
-          <AssociationSet Name="FK_Jobs_Categories" Association="Self.FK_Jobs_Categories">
-            <End Role="Categories" EntitySet="Categories" />
-            <End Role="Jobs" EntitySet="Jobs" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Jobs_LangFrom" Association="Self.FK_Jobs_LangFrom">
-            <End Role="Languages" EntitySet="Languages" />
-            <End Role="Jobs" EntitySet="Jobs" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Jobs_LangsTo" Association="Self.FK_Jobs_LangsTo">
-            <End Role="Languages" EntitySet="Languages" />
-            <End Role="Jobs" EntitySet="Jobs" />
-          </AssociationSet>
-        </EntityContainer>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -193,34 +160,35 @@
           <EntitySetMapping Name="Categories">
             <EntityTypeMapping TypeName="CostCalculatorDBModel.Category">
               <MappingFragment StoreEntitySet="Categories">
-                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="WorkRate" ColumnName="WorkRate" />
+                <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
                 <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
-                <ScalarProperty Name="CategoryPrice" ColumnName="CategoryPrice" />
-                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Jobs">
             <EntityTypeMapping TypeName="CostCalculatorDBModel.Job">
               <MappingFragment StoreEntitySet="Jobs">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="FromLangID" ColumnName="FromLangID" />
-                <ScalarProperty Name="ToLangID" ColumnName="ToLangID" />
-                <ScalarProperty Name="WordCount" ColumnName="WordCount" />
-                <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
-                <ScalarProperty Name="Price" ColumnName="Price" />
-                <ScalarProperty Name="IP_Address" ColumnName="IP_Address" />
-                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
-                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="PremiumPrice" ColumnName="PremiumPrice" />
+                <ScalarProperty Name="StandardPrice" ColumnName="StandardPrice" />
                 <ScalarProperty Name="NumberOfDays" ColumnName="NumberOfDays" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="IP_Address" ColumnName="IP_Address" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="WordCount" ColumnName="WordCount" />
+                <ScalarProperty Name="ToLangID" ColumnName="ToLangID" />
+                <ScalarProperty Name="FromLangID" ColumnName="FromLangID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Languages">
             <EntityTypeMapping TypeName="CostCalculatorDBModel.Language">
               <MappingFragment StoreEntitySet="Languages">
-                <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
