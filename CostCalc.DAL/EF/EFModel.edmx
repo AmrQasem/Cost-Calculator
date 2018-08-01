@@ -29,6 +29,7 @@
           <Property Name="NumberOfDays" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="StandardPrice" Type="decimal" Precision="18" Scale="3" Nullable="false" />
           <Property Name="PremiumPrice" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+          <Property Name="IsRush" Type="bit" />
         </EntityType>
         <EntityType Name="Languages">
           <Key>
@@ -115,6 +116,7 @@
           <Property Name="NumberOfDays" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
           <Property Name="StandardPrice" Type="Decimal" Nullable="false" Precision="18" Scale="3" />
           <Property Name="PremiumPrice" Type="Decimal" Nullable="false" Precision="18" Scale="3" />
+          <Property Name="IsRush" Type="Boolean" />
           <NavigationProperty Name="Language" Relationship="CostCalculatorDBModel.FK_Jobs_LanguagesFrom" FromRole="Job" ToRole="Language" />
           <NavigationProperty Name="Language1" Relationship="CostCalculatorDBModel.FK_Jobs_LanguagesTo" FromRole="Job" ToRole="Language" />
         </EntityType>
@@ -170,6 +172,7 @@
           <EntitySetMapping Name="Jobs">
             <EntityTypeMapping TypeName="CostCalculatorDBModel.Job">
               <MappingFragment StoreEntitySet="Jobs">
+                <ScalarProperty Name="IsRush" ColumnName="IsRush" />
                 <ScalarProperty Name="PremiumPrice" ColumnName="PremiumPrice" />
                 <ScalarProperty Name="StandardPrice" ColumnName="StandardPrice" />
                 <ScalarProperty Name="NumberOfDays" ColumnName="NumberOfDays" />

@@ -14,6 +14,7 @@ namespace CostCalc.Domain.Models
         public QuotationDM(GlobalErrors globalErrors) : base(globalErrors)
         {
             Ratio = 0.02;
+            IsRush = false;
         }
 
         public int ID { get; set; }
@@ -29,6 +30,8 @@ namespace CostCalc.Domain.Models
         public decimal StandardPrice { get; set; }
         public decimal PremiumPrice { get; set; }
         public List<CategoryDM> CategoryDMList { get; set; }
+        public bool? IsRush { get; set; }
+
 
 
         public void CalculateQuotation()
@@ -47,7 +50,7 @@ namespace CostCalc.Domain.Models
                 NumberOfDays = Math.Round(NumberOfDays, 0, MidpointRounding.AwayFromZero);
                 EndDate = StartDate.AddDays((double)NumberOfDays);
 
-                 CalcPrice(item, WordCount, ToLangID);
+                CalcPrice(item, WordCount, ToLangID);
             }
 
 
@@ -70,14 +73,19 @@ namespace CostCalc.Domain.Models
         public void CalcPrice(CategoryDM CatDM, decimal WordCount, int ToLang)
         {
             decimal price = 0;
-
-            if (ToLang == 1)
+            if (IsRush == false)
             {
-                price = Convert.ToDecimal((double)(WordCount) * ((double)CatDM.UnitPrice + Ratio));
+                if (ToLang == 1)
+                {
+                    price = Convert.ToDecimal((double)(WordCount) * ((double)CatDM.UnitPrice + Ratio));
+                }
+                else
+                    price = Convert.ToDecimal((double)(WordCount) * (double)CatDM.UnitPrice);
             }
-            else
-                price = Convert.ToDecimal((double)(WordCount) * (double)CatDM.UnitPrice);
+            else if (IsRush == true)
+            {
 
+            }
             if (CatDM.ID == 1)
             {
                 StandardPrice = price;

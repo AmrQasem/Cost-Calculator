@@ -25,6 +25,7 @@ namespace CostCalc.DAL.EF
         public decimal NumberOfDays { get; set; }
         public decimal StandardPrice { get; set; }
         public decimal PremiumPrice { get; set; }
+        public Nullable<bool> IsRush { get; set; }
     
         public virtual Language Language { get; set; }
         public virtual Language Language1 { get; set; }
