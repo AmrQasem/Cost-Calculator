@@ -19,6 +19,8 @@ namespace CostCalc.API.DTO
         public System.DateTime EndDate { get; set; }
         public decimal NumberOfDays { get; set; }
         public bool? IsRush { get; set; }
+        public DateTime RushDate { get; set; }
+
 
 
 
@@ -37,6 +39,7 @@ namespace CostCalc.API.DTO
             EndDate = job.EndDate;
             NumberOfDays = job.NumberOfDays;
             IsRush = job.IsRush;
+            RushDate = job.RushDate;
         }
 
         public QuotationDM MapVM_DM()
@@ -53,6 +56,7 @@ namespace CostCalc.API.DTO
             obj.EndDate = EndDate;
             obj.NumberOfDays = NumberOfDays;
             obj.IsRush = IsRush;
+            obj.RushDate = RushDate;
 
             return obj;
         }

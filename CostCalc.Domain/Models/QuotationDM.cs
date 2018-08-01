@@ -15,6 +15,7 @@ namespace CostCalc.Domain.Models
         {
             Ratio = 0.02;
             IsRush = false;
+            RushRatio = 0.1;
         }
 
         public int ID { get; set; }
@@ -31,6 +32,9 @@ namespace CostCalc.Domain.Models
         public decimal PremiumPrice { get; set; }
         public List<CategoryDM> CategoryDMList { get; set; }
         public bool? IsRush { get; set; }
+        public DateTime RushDate { get; set; }
+        public decimal NumberOfRushDays { get; set; }
+        public double RushRatio { get; set; }
 
 
 
@@ -46,14 +50,27 @@ namespace CostCalc.Domain.Models
 
             foreach (var item in CategoryDMList)
             {
-                NumberOfDays = WordCount / item.WorkRate;
-                NumberOfDays = Math.Round(NumberOfDays, 0, MidpointRounding.AwayFromZero);
-                EndDate = StartDate.AddDays((double)NumberOfDays);
+                if(IsRush == false)
+                {
+                    NumberOfDays = WordCount / item.WorkRate;
+                    NumberOfDays = Math.Round(NumberOfDays, 0, MidpointRounding.AwayFromZero);
+                    EndDate = StartDate.AddDays((double)NumberOfDays - 1);
 
-                CalcPrice(item, WordCount, ToLangID);
+                    CalcPrice(item, WordCount, ToLangID);
+                }
+                else if(IsRush == true)
+                {
+                    NumberOfDays = WordCount / item.WorkRate;
+                    EndDate = StartDate.AddDays((double)NumberOfDays - 1 );
+
+                    NumberOfRushDays = EndDate.Day - RushDate.Day;
+                    NumberOfDays = NumberOfDays - NumberOfRushDays;
+                    NumberOfDays = Math.Round(NumberOfDays, 0, MidpointRounding.AwayFromZero);
+                    EndDate = StartDate.AddDays((double)NumberOfDays - 1);
+
+                    CalcPriceRush(item, WordCount, ToLangID, NumberOfRushDays);
+                }
             }
-
-
         }
 
         public string Get_IP()
@@ -73,19 +90,42 @@ namespace CostCalc.Domain.Models
         public void CalcPrice(CategoryDM CatDM, decimal WordCount, int ToLang)
         {
             decimal price = 0;
-            if (IsRush == false)
+            if (ToLang == 1)
             {
-                if (ToLang == 1)
-                {
-                    price = Convert.ToDecimal((double)(WordCount) * ((double)CatDM.UnitPrice + Ratio));
-                }
-                else
-                    price = Convert.ToDecimal((double)(WordCount) * (double)CatDM.UnitPrice);
+                price = Convert.ToDecimal((double)(WordCount) * ((double)CatDM.UnitPrice + Ratio));
             }
-            else if (IsRush == true)
+            else
+                price = Convert.ToDecimal((double)(WordCount) * (double)CatDM.UnitPrice);
+
+            if (CatDM.ID == 1)
             {
+                StandardPrice = price;
+            }
+            else
+                PremiumPrice = price;
+        }
+
+        public void CalcPriceRush(CategoryDM CatDM, decimal WordCount, int ToLang, decimal NumberOfDays)
+        {
+            decimal price = 0;
+            
+
+            if (ToLang == 1)
+            {
+                
+                price = (NumberOfDays * (decimal)RushRatio * Convert.ToDecimal((double)(WordCount) * ((double)CatDM.UnitPrice + Ratio)) ) +
+                    Convert.ToDecimal((double)(WordCount) * ((double)CatDM.UnitPrice + Ratio));
+            }
+            else
+            {
+                decimal x,y = 0;
+                x = Convert.ToDecimal((double)(WordCount) * (double)CatDM.UnitPrice);
+                y = (NumberOfDays * (decimal)RushRatio * Convert.ToDecimal((double)(WordCount) * (double)CatDM.UnitPrice));
+                price = (NumberOfDays * (decimal)RushRatio * Convert.ToDecimal((double)(WordCount) * (double)CatDM.UnitPrice)) +
+                  Convert.ToDecimal((double)(WordCount) * (double)CatDM.UnitPrice);
 
             }
+
             if (CatDM.ID == 1)
             {
                 StandardPrice = price;

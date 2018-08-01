@@ -30,6 +30,7 @@ namespace CostCalc.DAL.Repositories
             obj.EndDate = domain.EndDate;
             obj.StandardPrice = domain.StandardPrice;
             obj.PremiumPrice = domain.PremiumPrice;
+            obj.IsRush = domain.IsRush;
 
             _DbContext.Jobs.Add(obj);
             _DbContext.SaveChanges();
