@@ -1,33 +1,33 @@
-﻿using System;
+﻿using CostCalc.API.DTO;
+using CostCalc.BLL.Services;
+using CostCalc.Domain.Models;
+using CostCalc.Helper.ExceptionHandling;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using CostCalc.BLL.Services;
-using CostCalc.Helper.ExceptionHandling;
-using CostCalc.API.DTO;
-using CostCalc.Domain.Models;
 
 namespace CostCalc.API.Controllers
 {
-    public class QuotationController : ApiController
+    public class QuotaionController : ApiController
     {
         GlobalErrors globalErrors = new GlobalErrors();
-        QuotationService _QuotationService;
+        QuotaionService _QuotaionService;
 
-        public QuotationController()
+        public QuotaionController()
         {
-            _QuotationService = new QuotationService(globalErrors);
+            _QuotaionService = new QuotaionService(globalErrors);
         }
         [HttpPost]
         // POST api/quotation
-        public HttpResponseMessage RequestQuotation([FromBody]QuotationVM dataModel)
+        public HttpResponseMessage RequestQuotation([FromBody]QuotaionVM dataModel)
         {
             try
             {
                 QuotationDM domainModel = dataModel.MapVM_DM();
-                domainModel = _QuotationService.GetQuotationForCategory(domainModel);
+                domainModel = _QuotaionService.GetQuotationForCategory(domainModel);
 
                 var msg = Request.CreateResponse(HttpStatusCode.Created, domainModel);
                 return msg;

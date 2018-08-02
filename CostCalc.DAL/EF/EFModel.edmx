@@ -14,6 +14,18 @@
           <Property Name="UnitPrice" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="WorkRate" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="JobDetails">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="JobID" Type="int" Nullable="false" />
+          <Property Name="CategoryID" Type="int" Nullable="false" />
+          <Property Name="StartDate" Type="date" Nullable="false" />
+          <Property Name="EndDate" Type="date" Nullable="false" />
+          <Property Name="Price" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+          <Property Name="NumberOfDays" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+        </EntityType>
         <EntityType Name="Jobs">
           <Key>
             <PropertyRef Name="ID" />
@@ -22,14 +34,9 @@
           <Property Name="FromLangID" Type="int" Nullable="false" />
           <Property Name="ToLangID" Type="int" Nullable="false" />
           <Property Name="WordCount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="Price" Type="decimal" Precision="18" Scale="3" Nullable="false" />
           <Property Name="IP_Address" Type="nvarchar" MaxLength="150" />
-          <Property Name="StartDate" Type="date" Nullable="false" />
-          <Property Name="EndDate" Type="date" Nullable="false" />
-          <Property Name="NumberOfDays" Type="decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="StandardPrice" Type="decimal" Precision="18" Scale="3" Nullable="false" />
-          <Property Name="PremiumPrice" Type="decimal" Precision="18" Scale="3" Nullable="false" />
           <Property Name="IsRush" Type="bit" />
+          <Property Name="SubjectID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Languages">
           <Key>
@@ -38,7 +45,38 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
         </EntityType>
-        <Association Name="FK_Jobs_LanguagesFrom">
+        <EntityType Name="Subjects">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SubjectTitle" Type="nvarchar" MaxLength="150" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_JobDetails_Categories">
+          <End Role="Categories" Type="Self.Categories" Multiplicity="1" />
+          <End Role="JobDetails" Type="Self.JobDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categories">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="JobDetails">
+              <PropertyRef Name="CategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_JobDetails_Jobs">
+          <End Role="Jobs" Type="Self.Jobs" Multiplicity="1" />
+          <End Role="JobDetails" Type="Self.JobDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Jobs">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="JobDetails">
+              <PropertyRef Name="JobID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Jobs_Languages">
           <End Role="Languages" Type="Self.Languages" Multiplicity="1" />
           <End Role="Jobs" Type="Self.Jobs" Multiplicity="*" />
           <ReferentialConstraint>
@@ -50,7 +88,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Jobs_LanguagesTo">
+        <Association Name="FK_Jobs_Languages1">
           <End Role="Languages" Type="Self.Languages" Multiplicity="1" />
           <End Role="Jobs" Type="Self.Jobs" Multiplicity="*" />
           <ReferentialConstraint>
@@ -62,16 +100,42 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Jobs_Subjects">
+          <End Role="Subjects" Type="Self.Subjects" Multiplicity="1" />
+          <End Role="Jobs" Type="Self.Jobs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subjects">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Jobs">
+              <PropertyRef Name="SubjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="CostCalculatorDBModelStoreContainer">
           <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="JobDetails" EntityType="Self.JobDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Jobs" EntityType="Self.Jobs" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Languages" EntityType="Self.Languages" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_Jobs_LanguagesFrom" Association="Self.FK_Jobs_LanguagesFrom">
+          <EntitySet Name="Subjects" EntityType="Self.Subjects" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_JobDetails_Categories" Association="Self.FK_JobDetails_Categories">
+            <End Role="Categories" EntitySet="Categories" />
+            <End Role="JobDetails" EntitySet="JobDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_JobDetails_Jobs" Association="Self.FK_JobDetails_Jobs">
+            <End Role="Jobs" EntitySet="Jobs" />
+            <End Role="JobDetails" EntitySet="JobDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Jobs_Languages" Association="Self.FK_Jobs_Languages">
             <End Role="Languages" EntitySet="Languages" />
             <End Role="Jobs" EntitySet="Jobs" />
           </AssociationSet>
-          <AssociationSet Name="FK_Jobs_LanguagesTo" Association="Self.FK_Jobs_LanguagesTo">
+          <AssociationSet Name="FK_Jobs_Languages1" Association="Self.FK_Jobs_Languages1">
             <End Role="Languages" EntitySet="Languages" />
+            <End Role="Jobs" EntitySet="Jobs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Jobs_Subjects" Association="Self.FK_Jobs_Subjects">
+            <End Role="Subjects" EntitySet="Subjects" />
             <End Role="Jobs" EntitySet="Jobs" />
           </AssociationSet>
         </EntityContainer>
@@ -81,14 +145,28 @@
       <Schema Namespace="CostCalculatorDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="CostCalculatorDBEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Categories" EntityType="CostCalculatorDBModel.Category" />
+          <EntitySet Name="JobDetails" EntityType="CostCalculatorDBModel.JobDetail" />
           <EntitySet Name="Jobs" EntityType="CostCalculatorDBModel.Job" />
           <EntitySet Name="Languages" EntityType="CostCalculatorDBModel.Language" />
-          <AssociationSet Name="FK_Jobs_LanguagesFrom" Association="CostCalculatorDBModel.FK_Jobs_LanguagesFrom">
+          <EntitySet Name="Subjects" EntityType="CostCalculatorDBModel.Subject" />
+          <AssociationSet Name="FK_JobDetails_Categories" Association="CostCalculatorDBModel.FK_JobDetails_Categories">
+            <End Role="Category" EntitySet="Categories" />
+            <End Role="JobDetail" EntitySet="JobDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_JobDetails_Jobs" Association="CostCalculatorDBModel.FK_JobDetails_Jobs">
+            <End Role="Job" EntitySet="Jobs" />
+            <End Role="JobDetail" EntitySet="JobDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Jobs_Languages" Association="CostCalculatorDBModel.FK_Jobs_Languages">
             <End Role="Language" EntitySet="Languages" />
             <End Role="Job" EntitySet="Jobs" />
           </AssociationSet>
-          <AssociationSet Name="FK_Jobs_LanguagesTo" Association="CostCalculatorDBModel.FK_Jobs_LanguagesTo">
+          <AssociationSet Name="FK_Jobs_Languages1" Association="CostCalculatorDBModel.FK_Jobs_Languages1">
             <End Role="Language" EntitySet="Languages" />
+            <End Role="Job" EntitySet="Jobs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Jobs_Subjects" Association="CostCalculatorDBModel.FK_Jobs_Subjects">
+            <End Role="Subject" EntitySet="Subjects" />
             <End Role="Job" EntitySet="Jobs" />
           </AssociationSet>
         </EntityContainer>
@@ -100,6 +178,21 @@
           <Property Name="CategoryName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="UnitPrice" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
           <Property Name="WorkRate" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="JobDetails" Relationship="CostCalculatorDBModel.FK_JobDetails_Categories" FromRole="Category" ToRole="JobDetail" />
+        </EntityType>
+        <EntityType Name="JobDetail">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="JobID" Type="Int32" Nullable="false" />
+          <Property Name="CategoryID" Type="Int32" Nullable="false" />
+          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Price" Type="Decimal" Nullable="false" Precision="18" Scale="3" />
+          <Property Name="NumberOfDays" Type="Decimal" Nullable="false" Precision="18" Scale="3" />
+          <NavigationProperty Name="Category" Relationship="CostCalculatorDBModel.FK_JobDetails_Categories" FromRole="JobDetail" ToRole="Category" />
+          <NavigationProperty Name="Job" Relationship="CostCalculatorDBModel.FK_JobDetails_Jobs" FromRole="JobDetail" ToRole="Job" />
         </EntityType>
         <EntityType Name="Job">
           <Key>
@@ -109,16 +202,13 @@
           <Property Name="FromLangID" Type="Int32" Nullable="false" />
           <Property Name="ToLangID" Type="Int32" Nullable="false" />
           <Property Name="WordCount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-          <Property Name="Price" Type="Decimal" Nullable="false" Precision="18" Scale="3" />
           <Property Name="IP_Address" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="NumberOfDays" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-          <Property Name="StandardPrice" Type="Decimal" Nullable="false" Precision="18" Scale="3" />
-          <Property Name="PremiumPrice" Type="Decimal" Nullable="false" Precision="18" Scale="3" />
           <Property Name="IsRush" Type="Boolean" />
-          <NavigationProperty Name="Language" Relationship="CostCalculatorDBModel.FK_Jobs_LanguagesFrom" FromRole="Job" ToRole="Language" />
-          <NavigationProperty Name="Language1" Relationship="CostCalculatorDBModel.FK_Jobs_LanguagesTo" FromRole="Job" ToRole="Language" />
+          <Property Name="SubjectID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="JobDetails" Relationship="CostCalculatorDBModel.FK_JobDetails_Jobs" FromRole="Job" ToRole="JobDetail" />
+          <NavigationProperty Name="Language" Relationship="CostCalculatorDBModel.FK_Jobs_Languages" FromRole="Job" ToRole="Language" />
+          <NavigationProperty Name="Language1" Relationship="CostCalculatorDBModel.FK_Jobs_Languages1" FromRole="Job" ToRole="Language" />
+          <NavigationProperty Name="Subject" Relationship="CostCalculatorDBModel.FK_Jobs_Subjects" FromRole="Job" ToRole="Subject" />
         </EntityType>
         <EntityType Name="Language">
           <Key>
@@ -126,10 +216,42 @@
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Jobs" Relationship="CostCalculatorDBModel.FK_Jobs_LanguagesFrom" FromRole="Language" ToRole="Job" />
-          <NavigationProperty Name="Jobs1" Relationship="CostCalculatorDBModel.FK_Jobs_LanguagesTo" FromRole="Language" ToRole="Job" />
+          <NavigationProperty Name="Jobs" Relationship="CostCalculatorDBModel.FK_Jobs_Languages" FromRole="Language" ToRole="Job" />
+          <NavigationProperty Name="Jobs1" Relationship="CostCalculatorDBModel.FK_Jobs_Languages1" FromRole="Language" ToRole="Job" />
         </EntityType>
-        <Association Name="FK_Jobs_LanguagesFrom">
+        <EntityType Name="Subject">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SubjectTitle" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Jobs" Relationship="CostCalculatorDBModel.FK_Jobs_Subjects" FromRole="Subject" ToRole="Job" />
+        </EntityType>
+        <Association Name="FK_JobDetails_Categories">
+          <End Type="CostCalculatorDBModel.Category" Role="Category" Multiplicity="1" />
+          <End Type="CostCalculatorDBModel.JobDetail" Role="JobDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="JobDetail">
+              <PropertyRef Name="CategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_JobDetails_Jobs">
+          <End Type="CostCalculatorDBModel.Job" Role="Job" Multiplicity="1" />
+          <End Type="CostCalculatorDBModel.JobDetail" Role="JobDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Job">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="JobDetail">
+              <PropertyRef Name="JobID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Jobs_Languages">
           <End Type="CostCalculatorDBModel.Language" Role="Language" Multiplicity="1" />
           <End Type="CostCalculatorDBModel.Job" Role="Job" Multiplicity="*" />
           <ReferentialConstraint>
@@ -141,7 +263,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Jobs_LanguagesTo">
+        <Association Name="FK_Jobs_Languages1">
           <End Type="CostCalculatorDBModel.Language" Role="Language" Multiplicity="1" />
           <End Type="CostCalculatorDBModel.Job" Role="Job" Multiplicity="*" />
           <ReferentialConstraint>
@@ -150,6 +272,18 @@
             </Principal>
             <Dependent Role="Job">
               <PropertyRef Name="ToLangID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Jobs_Subjects">
+          <End Type="CostCalculatorDBModel.Subject" Role="Subject" Multiplicity="1" />
+          <End Type="CostCalculatorDBModel.Job" Role="Job" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subject">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Job">
+              <PropertyRef Name="SubjectID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -169,17 +303,25 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="JobDetails">
+            <EntityTypeMapping TypeName="CostCalculatorDBModel.JobDetail">
+              <MappingFragment StoreEntitySet="JobDetails">
+                <ScalarProperty Name="NumberOfDays" ColumnName="NumberOfDays" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+                <ScalarProperty Name="JobID" ColumnName="JobID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Jobs">
             <EntityTypeMapping TypeName="CostCalculatorDBModel.Job">
               <MappingFragment StoreEntitySet="Jobs">
+                <ScalarProperty Name="SubjectID" ColumnName="SubjectID" />
                 <ScalarProperty Name="IsRush" ColumnName="IsRush" />
-                <ScalarProperty Name="PremiumPrice" ColumnName="PremiumPrice" />
-                <ScalarProperty Name="StandardPrice" ColumnName="StandardPrice" />
-                <ScalarProperty Name="NumberOfDays" ColumnName="NumberOfDays" />
-                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
-                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
                 <ScalarProperty Name="IP_Address" ColumnName="IP_Address" />
-                <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="WordCount" ColumnName="WordCount" />
                 <ScalarProperty Name="ToLangID" ColumnName="ToLangID" />
                 <ScalarProperty Name="FromLangID" ColumnName="FromLangID" />
@@ -191,6 +333,14 @@
             <EntityTypeMapping TypeName="CostCalculatorDBModel.Language">
               <MappingFragment StoreEntitySet="Languages">
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Subjects">
+            <EntityTypeMapping TypeName="CostCalculatorDBModel.Subject">
+              <MappingFragment StoreEntitySet="Subjects">
+                <ScalarProperty Name="SubjectTitle" ColumnName="SubjectTitle" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

@@ -3,17 +3,15 @@ using CostCalc.Domain.Models;
 using CostCalc.Helper.ExceptionHandling;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
-using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace CostCalc.DAL.Repositories
 {
-    public class QuotationRepository : BaseRepository<QuotationDM, int>
+    public class QuotaionRepository : BaseRepository<QuotationDM, int>
     {
-        public QuotationRepository(GlobalErrors globalErrors) : base(globalErrors)
+        public QuotaionRepository(GlobalErrors globalErrors) : base(globalErrors)
         {
         }
         public override void Add(QuotationDM domain)
@@ -24,15 +22,28 @@ namespace CostCalc.DAL.Repositories
             obj.ToLangID = domain.ToLangID;
             obj.WordCount = domain.WordCount;
             obj.IP_Address = domain.IP_Address;
-            obj.StartDate = domain.StartDate;
-            obj.NumberOfDays = domain.NumberOfDays;
-            obj.Price = domain.Price;
-            obj.EndDate = domain.EndDate;
-            obj.StandardPrice = domain.StandardPrice;
-            obj.PremiumPrice = domain.PremiumPrice;
             obj.IsRush = domain.IsRush;
+            obj.SubjectID = domain.Subject.ID;
 
             _DbContext.Jobs.Add(obj);
+            _DbContext.SaveChanges();
+
+            domain.ID = obj.ID;
+        }
+
+        public  void AddDetails(QuotaionDetailsDM domain)
+        {
+            JobDetail obj = new JobDetail();
+
+            obj.NumberOfDays = domain.NumberOfDays;
+            obj.CategoryID = domain.Category.ID;
+            obj.Price = domain.Price;
+            obj.StartDate = domain.StartDate;
+            obj.EndDate = domain.EndDate;
+            obj.JobID = domain.Quotaion.ID;
+
+
+            _DbContext.JobDetails.Add(obj);
             _DbContext.SaveChanges();
         }
 
@@ -51,20 +62,19 @@ namespace CostCalc.DAL.Repositories
             throw new NotImplementedException();
         }
 
-        public List<CategoryDM> GetCategory(int? ID)
+        public List<SubjectDM> GetSubjects(int? ID)
         {
-            var CategoryDetails = ID == 0? _DbContext.Categories : _DbContext.Categories.Where(s=>s.ID == ID);
-            List<CategoryDM> CategoryDMList = new List<CategoryDM>();
-            foreach (var item in CategoryDetails)
+            var SubjectDetails = ID == 0 ? _DbContext.Subjects : _DbContext.Subjects.Where(s => s.ID == ID);
+            List<SubjectDM> SubjectDMList = new List<SubjectDM>();
+            foreach (var item in SubjectDetails)
             {
-                CategoryDM CatDM = new CategoryDM(_GlobalErrors);
-                CatDM.ID = item.ID;
-                CatDM.CategoryName = item.CategoryName;
-                CatDM.UnitPrice = item.UnitPrice;
-                CatDM.WorkRate = item.WorkRate;
-                CategoryDMList.Add(CatDM);
+                SubjectDM SubDM = new SubjectDM(_GlobalErrors);
+                SubDM.ID = item.ID;
+                SubDM.SubjectTitle = item.SubjectTitle;
+
+                SubjectDMList.Add(SubDM);
             }
-            return CategoryDMList;
+            return SubjectDMList;
         }
     }
 }

@@ -15,7 +15,7 @@ namespace CostCalc.Domain.Models
     /// </summary>
     public abstract class BaseDM<IdType> : IDomainModel
     {
-        public IdType Id { get; set; }
+        //public IdType Id { get; set; }
         /// <summary>
         /// Used to Log Unhandled Exceptions
         /// </summary>

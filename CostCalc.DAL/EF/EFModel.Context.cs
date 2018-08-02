@@ -26,7 +26,9 @@ namespace CostCalc.DAL.EF
         }
     
         public virtual DbSet<Category> Categories { get; set; }
+        public virtual DbSet<JobDetail> JobDetails { get; set; }
         public virtual DbSet<Job> Jobs { get; set; }
         public virtual DbSet<Language> Languages { get; set; }
+        public virtual DbSet<Subject> Subjects { get; set; }
     }
 }
