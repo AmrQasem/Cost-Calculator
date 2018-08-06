@@ -12,12 +12,12 @@ namespace CostCalc.DAL.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class Job
+    public partial class Quotation
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Job()
+        public Quotation()
         {
-            this.JobDetails = new HashSet<JobDetail>();
+            this.QuotationDetails = new HashSet<QuotationDetail>();
         }
     
         public int ID { get; set; }
@@ -27,11 +27,12 @@ namespace CostCalc.DAL.EF
         public string IP_Address { get; set; }
         public Nullable<bool> IsRush { get; set; }
         public int SubjectID { get; set; }
+        public System.DateTime StartDate { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<JobDetail> JobDetails { get; set; }
         public virtual Language Language { get; set; }
         public virtual Language Language1 { get; set; }
         public virtual Subject Subject { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<QuotationDetail> QuotationDetails { get; set; }
     }
 }

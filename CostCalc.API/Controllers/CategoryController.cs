@@ -26,21 +26,49 @@ namespace CostCalc.API.Controllers
         [HttpGet]
         public IEnumerable<CategoryDM> GetAllCategories()
         {
-           return _CategoryService.GetAllCategories();
+            try
+            {
+                return _CategoryService.GetAllCategories();
+            }
+            catch (Exception ex)
+            {
+                //Errors in this scope indicates system error (not validation errors)
+                //If error exist but not handled, log it and add system error
+                if (!globalErrors.ErrorHandled)
+                {
+                    globalErrors.AddSystemError("Service Error: Cannot Get All Categories!");
+                    globalErrors.ErrorHandled = true;
+                }
+                throw;
+            }
         }
 
         // GET: api/Category/5
         [HttpGet]
         public HttpResponseMessage GetCategoryByID(int id)
         {
-            var CategoryDetails = _CategoryService.GetById(id);
-            if (CategoryDetails != null)
+            try
             {
-                return Request.CreateResponse(HttpStatusCode.OK, CategoryDetails);
+                var CategoryDetails = _CategoryService.GetById(id);
+                if (CategoryDetails != null)
+                {
+                    return Request.CreateResponse(HttpStatusCode.OK, CategoryDetails);
+                }
+                else
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Category with ID = " + id.ToString() + " is not found ");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Category with ID = " + id.ToString() + " is not found ");
+                //Errors in this scope indicates system error (not validation errors)
+                //If error exist but not handled, log it and add system error
+                if (!globalErrors.ErrorHandled)
+                {
+                    globalErrors.AddSystemError("Service Error: Cannot Get Speceific Categories!");
+                    globalErrors.ErrorHandled = true;
+                }
+                throw;
             }
         }
 
@@ -57,7 +85,16 @@ namespace CostCalc.API.Controllers
             }
             catch (Exception ex)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+                //Errors in this scope indicates system error (not validation errors)
+                //If error exist but not handled, log it and add system error
+                if (!globalErrors.ErrorHandled)
+                {
+                    globalErrors.AddSystemError("Service Error: Cannot Get Add Category!");
+                    globalErrors.ErrorHandled = true;
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+
+                }
+                throw;
             }
 
         }
@@ -76,7 +113,15 @@ namespace CostCalc.API.Controllers
             }
             catch (Exception ex)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+                //Errors in this scope indicates system error (not validation errors)
+                //If error exist but not handled, log it and add system error
+                if (!globalErrors.ErrorHandled)
+                {
+                    globalErrors.AddSystemError("Service Error: Cannot Edit Category!");
+                    globalErrors.ErrorHandled = true;
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+                }
+                throw;
             }
         }
 
@@ -92,7 +137,15 @@ namespace CostCalc.API.Controllers
             }
             catch (Exception ex)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+                //Errors in this scope indicates system error (not validation errors)
+                //If error exist but not handled, log it and add system error
+                if (!globalErrors.ErrorHandled)
+                {
+                    globalErrors.AddSystemError("Service Error: Cannot Delete Category!");
+                    globalErrors.ErrorHandled = true;
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+                }
+                throw;
             }
         }
     }

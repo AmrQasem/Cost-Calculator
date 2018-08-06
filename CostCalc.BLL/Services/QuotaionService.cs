@@ -22,24 +22,46 @@ namespace CostCalc.BLL.Services
 
         public QuotationDM GetQuotationForCategory(QuotationDM domainModel)
         {
-            CategoryService _CategorySer = new CategoryService(_GlobalErrors);
-            _QuotaionRepo.Add(domainModel);
-           
-            domainModel.CategoryDMList = _CategorySer.GetAllCategories();
-
-            foreach (var item in domainModel.CategoryDMList)
+            try
             {
-                QuotaionDetailsDM obj = new QuotaionDetailsDM(_GlobalErrors);
+                CategoryService _CategorySer = new CategoryService(_GlobalErrors);
+                domainModel.StartDate = DateTime.Now;
+                _QuotaionRepo.Add(domainModel);
 
-                obj.Category = item;
-                obj.Quotaion = domainModel;
-                obj.AddCalculatedQuotation();
-                _QuotaionRepo.AddDetails(obj);
+                domainModel.CategoryDMList = _CategorySer.GetAllCategories();
+                domainModel.QuotaionDetailsList = new List<QuotaionDetailsDM>();
+
+                foreach (var item in domainModel.CategoryDMList)
+                {
+                    QuotaionDetailsDM obj = new QuotaionDetailsDM(_GlobalErrors);
+
+                    obj.Category = item;
+                    obj.Quotaion = domainModel;
+                    obj.AddCalculatedQuotation();
+                    _QuotaionRepo.AddDetails(obj);
+                    domainModel.QuotaionDetailsList.Add(obj);
+                }
+
+                return domainModel;
             }
-
-            return domainModel;
+            catch (Exception ex)
+            {
+                //Errors in this scope indicates system error (not validation errors)
+                //If error exist but not handled, log it and add system error
+                if (!_GlobalErrors.ErrorHandled)
+                {
+                    _Logger.Error(ex, "Service Error: Cannot Request Quotation!");
+                    _GlobalErrors.AddSystemError("Service Error: Cannot Request Quotation!");
+                    _GlobalErrors.ErrorHandled = true;
+                }
+                throw;
+            }
         }
 
+        //public List<QuotaionDetailsDM> GetQuotationDetails()
+        //{
+        //    return _QuotaionRepo.GetAllQuotationDetails();
+        //}
 
     }
 }

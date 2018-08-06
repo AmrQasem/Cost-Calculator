@@ -40,8 +40,12 @@ namespace CostCalc.Web.Controllers
         [HttpPost]
         public ActionResult Create(CategoryVM Cat)
         {
-            client.PostAsJsonAsync<CategoryVM>("category", Cat).ContinueWith((e => e.Result.EnsureSuccessStatusCode()));
+            if (ModelState.IsValid)
+            {
+                client.PostAsJsonAsync<CategoryVM>("category", Cat).ContinueWith((e => e.Result.EnsureSuccessStatusCode()));
+            }
             return RedirectToAction("Index");
+
         }
 
         public ActionResult Edit(int id)

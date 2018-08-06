@@ -17,16 +17,16 @@ namespace CostCalc.DAL.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Language()
         {
-            this.Jobs = new HashSet<Job>();
-            this.Jobs1 = new HashSet<Job>();
+            this.Quotations = new HashSet<Quotation>();
+            this.Quotations1 = new HashSet<Quotation>();
         }
     
         public int ID { get; set; }
         public string Name { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Job> Jobs { get; set; }
+        public virtual ICollection<Quotation> Quotations { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Job> Jobs1 { get; set; }
+        public virtual ICollection<Quotation> Quotations1 { get; set; }
     }
 }

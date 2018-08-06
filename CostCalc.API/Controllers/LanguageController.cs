@@ -25,21 +25,49 @@ namespace CostCalc.API.Controllers
         [HttpGet]
         public IEnumerable<LanguageDM> GetAllLanguages()
         {
-            return _LanguageService.GetAllLanguages();
+            try
+            {
+                return _LanguageService.GetAllLanguages();
+            }
+            catch (Exception ex)
+            {
+                //Errors in this scope indicates system error (not validation errors)
+                //If error exist but not handled, log it and add system error
+                if (!globalErrors.ErrorHandled)
+                {
+                    globalErrors.AddSystemError("Service Error: Cannot Get All Languages!");
+                    globalErrors.ErrorHandled = true;
+                }
+                throw;
+            }
         }
 
         // GET: api/Language/5
         [HttpGet]
         public HttpResponseMessage GetLanguageByID(int id)
         {
-            var LanguageDetails = _LanguageService.GetById(id);
-            if (LanguageDetails != null)
+            try
             {
-                return Request.CreateResponse(HttpStatusCode.OK, LanguageDetails);
+                var LanguageDetails = _LanguageService.GetById(id);
+                if (LanguageDetails != null)
+                {
+                    return Request.CreateResponse(HttpStatusCode.OK, LanguageDetails);
+                }
+                else
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Language with ID = " + id.ToString() + " is not found ");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Language with ID = " + id.ToString() + " is not found ");
+                //Errors in this scope indicates system error (not validation errors)
+                //If error exist but not handled, log it and add system error
+                if (!globalErrors.ErrorHandled)
+                {
+                    globalErrors.AddSystemError("Service Error: Cannot Get Specific Languages!");
+                    globalErrors.ErrorHandled = true;
+                }
+                throw;
             }
         }
 
@@ -56,7 +84,16 @@ namespace CostCalc.API.Controllers
             }
             catch (Exception ex)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+                //Errors in this scope indicates system error (not validation errors)
+                //If error exist but not handled, log it and add system error
+                if (!globalErrors.ErrorHandled)
+                {
+                    globalErrors.AddSystemError("Service Error: Cannot Add Languages!");
+                    globalErrors.ErrorHandled = true;
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+
+                }
+                throw;
             }
 
         }
@@ -75,7 +112,15 @@ namespace CostCalc.API.Controllers
             }
             catch (Exception ex)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+                //Errors in this scope indicates system error (not validation errors)
+                //If error exist but not handled, log it and add system error
+                if (!globalErrors.ErrorHandled)
+                {
+                    globalErrors.AddSystemError("Service Error: Cannot Update Languages!");
+                    globalErrors.ErrorHandled = true;
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+                }
+                throw;
             }
         }
 
@@ -91,7 +136,15 @@ namespace CostCalc.API.Controllers
             }
             catch (Exception ex)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+                //Errors in this scope indicates system error (not validation errors)
+                //If error exist but not handled, log it and add system error
+                if (!globalErrors.ErrorHandled)
+                {
+                    globalErrors.AddSystemError("Service Error: Cannot Delete Languages!");
+                    globalErrors.ErrorHandled = true;
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+                }
+                throw;
             }
         }
     }

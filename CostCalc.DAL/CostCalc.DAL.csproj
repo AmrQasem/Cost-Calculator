@@ -99,13 +99,22 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>EFModel.edmx</DependentUpon>
     </Compile>
-    <Compile Include="EF\Job.cs">
+    <Compile Include="EF\GetAllLang_Result.cs">
       <DependentUpon>EFModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\JobDetail.cs">
+    <Compile Include="EF\GetCategoriesDetails_Result.cs">
+      <DependentUpon>EFModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\GetQuotationDetails_Result.cs">
       <DependentUpon>EFModel.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\Language.cs">
+      <DependentUpon>EFModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\Quotation.cs">
+      <DependentUpon>EFModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\QuotationDetail.cs">
       <DependentUpon>EFModel.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\Subject.cs">

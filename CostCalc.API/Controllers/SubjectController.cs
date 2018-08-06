@@ -25,21 +25,49 @@ namespace CostCalc.API.Controllers
         [HttpGet]
         public IEnumerable<SubjectDM> GetAllSubjects()
         {
-            return _SubjectService.GetAllSubjects();
+            try
+            {
+                return _SubjectService.GetAllSubjects();
+            }
+            catch (Exception ex)
+            {
+                //Errors in this scope indicates system error (not validation errors)
+                //If error not handled, log it and add system error
+                if (!globalErrors.ErrorHandled)
+                {
+                    globalErrors.AddSystemError("Database Error: Cannot Get All Subjects!");
+                    globalErrors.ErrorHandled = true;
+                }
+                throw;
+            }
         }
 
         // GET: api/Subject/5
         [HttpGet]
         public HttpResponseMessage GetSubjectByID(int id)
         {
-            var SubjectDetails = _SubjectService.GetById(id);
-            if (SubjectDetails != null)
+            try
             {
-                return Request.CreateResponse(HttpStatusCode.OK, SubjectDetails);
+                var SubjectDetails = _SubjectService.GetById(id);
+                if (SubjectDetails != null)
+                {
+                    return Request.CreateResponse(HttpStatusCode.OK, SubjectDetails);
+                }
+                else
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Subject with ID = " + id.ToString() + " is not found ");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Subject with ID = " + id.ToString() + " is not found ");
+                //Errors in this scope indicates system error (not validation errors)
+                //If error not handled, log it and add system error
+                if (!globalErrors.ErrorHandled)
+                {
+                    globalErrors.AddSystemError("Database Error: Cannot Get Specific Subjects!");
+                    globalErrors.ErrorHandled = true;
+                }
+                throw;
             }
         }
 
@@ -56,7 +84,15 @@ namespace CostCalc.API.Controllers
             }
             catch (Exception ex)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+                //Errors in this scope indicates system error (not validation errors)
+                //If error not handled, log it and add system error
+                if (!globalErrors.ErrorHandled)
+                {
+                    globalErrors.AddSystemError("Database Error: Cannot Add Subjects!");
+                    globalErrors.ErrorHandled = true;
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+                }
+                throw;
             }
 
         }
@@ -75,7 +111,15 @@ namespace CostCalc.API.Controllers
             }
             catch (Exception ex)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+                //Errors in this scope indicates system error (not validation errors)
+                //If error not handled, log it and add system error
+                if (!globalErrors.ErrorHandled)
+                {
+                    globalErrors.AddSystemError("Database Error: Cannot Update Subjects!");
+                    globalErrors.ErrorHandled = true;
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+                }
+                throw;
             }
         }
 
@@ -91,7 +135,15 @@ namespace CostCalc.API.Controllers
             }
             catch (Exception ex)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+                //Errors in this scope indicates system error (not validation errors)
+                //If error not handled, log it and add system error
+                if (!globalErrors.ErrorHandled)
+                {
+                    globalErrors.AddSystemError("Database Error: Cannot Delete Subjects!");
+                    globalErrors.ErrorHandled = true;
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+                }
+                throw;
             }
         }
     }

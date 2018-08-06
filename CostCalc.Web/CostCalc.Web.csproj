@@ -194,6 +194,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LanguagesController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\QuotationsController.cs" />
     <Compile Include="Controllers\SubjectsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -273,6 +274,9 @@
     <Content Include="Views\Subjects\Create.cshtml" />
     <Content Include="Views\Subjects\Edit.cshtml" />
     <Content Include="Views\Subjects\Delete.cshtml" />
+    <Content Include="Views\Quotations\Create.cshtml" />
+    <Content Include="Views\Quotations\Index.cshtml" />
+    <Content Include="Views\Quotations\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -34,7 +34,15 @@ namespace CostCalc.API.Controllers
             }
             catch (Exception ex)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+                //Errors in this scope indicates system error (not validation errors)
+                //If error exist but not handled, log it and add system error
+                if (!globalErrors.ErrorHandled)
+                {
+                    globalErrors.AddSystemError("Service Error: Cannot Request Quotation!");
+                    globalErrors.ErrorHandled = true;
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+                }
+                throw;
             }
         }
     }

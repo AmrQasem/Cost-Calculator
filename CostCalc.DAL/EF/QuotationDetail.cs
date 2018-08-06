@@ -12,18 +12,15 @@ namespace CostCalc.DAL.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class Subject
+    public partial class QuotationDetail
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Subject()
-        {
-            this.Quotations = new HashSet<Quotation>();
-        }
-    
         public int ID { get; set; }
-        public string SubjectTitle { get; set; }
+        public int QuotationID { get; set; }
+        public int CategoryID { get; set; }
+        public decimal Price { get; set; }
+        public decimal NumberOfDays { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Quotation> Quotations { get; set; }
+        public virtual Category Category { get; set; }
+        public virtual Quotation Quotation { get; set; }
     }
 }

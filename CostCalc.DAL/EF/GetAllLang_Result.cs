@@ -10,19 +10,10 @@
 namespace CostCalc.DAL.EF
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class JobDetail
+    public partial class GetAllLang_Result
     {
         public int ID { get; set; }
-        public int JobID { get; set; }
-        public int CategoryID { get; set; }
-        public System.DateTime StartDate { get; set; }
-        public System.DateTime EndDate { get; set; }
-        public decimal Price { get; set; }
-        public decimal NumberOfDays { get; set; }
-    
-        public virtual Category Category { get; set; }
-        public virtual Job Job { get; set; }
+        public string Name { get; set; }
     }
 }

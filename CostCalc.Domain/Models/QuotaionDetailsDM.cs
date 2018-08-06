@@ -36,26 +36,26 @@ namespace CostCalc.Domain.Models
 
         public void AddCalculatedQuotation()
         {
-            StartDate = DateTime.Today;
+            //StartDate = DateTime.Today;
 
 
-            if (Quotaion.IsRush == false)
+            if (Quotaion.IsRush == false || Quotaion.IsRush == null)
             {
                 NumberOfDays = (Quotaion.WordCount / Category.WorkRate);
                 NumberOfDays = Math.Round(NumberOfDays, 0, MidpointRounding.AwayFromZero);
-                EndDate = StartDate.AddDays((double)NumberOfDays - 1);
+                //EndDate = StartDate.AddDays((double)NumberOfDays - 1);
 
                 CalcPrice(Quotaion.WordCount, Quotaion.ToLangID);
             }
             else if (IsRush == true)
             {
                 NumberOfDays = Quotaion.WordCount / Category.WorkRate;
-                EndDate = StartDate.AddDays((double)NumberOfDays - 1);
+                //EndDate = StartDate.AddDays((double)NumberOfDays - 1);
 
                 NumberOfRushDays = EndDate.Day - RushDate.Day;
                 NumberOfDays = NumberOfDays - NumberOfRushDays;
                 NumberOfDays = Math.Round(NumberOfDays, 0, MidpointRounding.AwayFromZero);
-                EndDate = StartDate.AddDays((double)NumberOfDays - 1);
+                //EndDate = StartDate.AddDays((double)NumberOfDays - 1);
 
                 CalcPriceRush(Quotaion.WordCount, Quotaion.ToLangID, NumberOfRushDays);
             }

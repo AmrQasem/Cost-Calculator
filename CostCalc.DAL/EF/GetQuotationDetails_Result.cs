@@ -10,22 +10,24 @@
 namespace CostCalc.DAL.EF
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class Category
+    public partial class GetQuotationDetails_Result
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Category()
-        {
-            this.QuotationDetails = new HashSet<QuotationDetail>();
-        }
-    
         public int ID { get; set; }
+        public int FromLangID { get; set; }
+        public string FromLanguage { get; set; }
+        public int ToLangID { get; set; }
+        public string ToLanguage { get; set; }
+        public decimal WordCount { get; set; }
+        public int SubjectID { get; set; }
+        public string SubjectTitle { get; set; }
+        public int CategoryID { get; set; }
         public string CategoryName { get; set; }
+        public System.DateTime StartDate { get; set; }
+        public System.DateTime EndDate { get; set; }
+        public decimal Price { get; set; }
+        public decimal NumberOfDays { get; set; }
         public decimal UnitPrice { get; set; }
         public int WorkRate { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<QuotationDetail> QuotationDetails { get; set; }
     }
 }

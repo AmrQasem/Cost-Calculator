@@ -12,6 +12,8 @@ namespace CostCalc.DAL.EF
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class CostCalculatorDBEntities : DbContext
     {
@@ -26,9 +28,24 @@ namespace CostCalc.DAL.EF
         }
     
         public virtual DbSet<Category> Categories { get; set; }
-        public virtual DbSet<JobDetail> JobDetails { get; set; }
-        public virtual DbSet<Job> Jobs { get; set; }
         public virtual DbSet<Language> Languages { get; set; }
+        public virtual DbSet<Quotation> Quotations { get; set; }
+        public virtual DbSet<QuotationDetail> QuotationDetails { get; set; }
         public virtual DbSet<Subject> Subjects { get; set; }
+    
+        public virtual ObjectResult<GetAllLang_Result> GetAllLang()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetAllLang_Result>("GetAllLang");
+        }
+    
+        public virtual ObjectResult<GetCategoriesDetails_Result> GetCategoriesDetails()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetCategoriesDetails_Result>("GetCategoriesDetails");
+        }
+    
+        public virtual ObjectResult<GetQuotationDetails_Result> GetQuotationDetails()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetQuotationDetails_Result>("GetQuotationDetails");
+        }
     }
 }

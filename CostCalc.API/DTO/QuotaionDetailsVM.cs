@@ -16,7 +16,7 @@ namespace CostCalc.API.DTO
         public System.DateTime EndDate { get; set; }
         public decimal Price { get; set; }
         public decimal NumberOfDays { get; set; }
-
+        public string CategoryName { get; set; }
 
 
         public QuotaionDetailsVM()
@@ -27,8 +27,9 @@ namespace CostCalc.API.DTO
             ID = QuotaionDetails.ID;
             JobID = QuotaionDetails.Quotaion.ID;
             CategoryID = QuotaionDetails.Category.ID;
-            StartDate = QuotaionDetails.StartDate;
-            EndDate = QuotaionDetails.EndDate;
+            CategoryName = QuotaionDetails.Category.CategoryName;
+            //StartDate = QuotaionDetails.StartDate;
+            //EndDate = QuotaionDetails.EndDate;
             Price = QuotaionDetails.Price;
             NumberOfDays = QuotaionDetails.NumberOfDays;
         }
@@ -40,8 +41,8 @@ namespace CostCalc.API.DTO
             obj.ID = ID;
             obj.Quotaion =new QuotationDM(globalErrors) {ID = JobID } ;
             obj.Category =new CategoryDM(globalErrors){ ID = CategoryID } ;
-            obj.StartDate = StartDate;
-            obj.EndDate = EndDate;
+            //obj.StartDate = StartDate;
+            //obj.EndDate = EndDate;
             obj.Price = Price;
             obj.NumberOfDays = NumberOfDays;
             return obj;

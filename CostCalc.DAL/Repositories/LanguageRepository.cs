@@ -17,65 +17,148 @@ namespace CostCalc.DAL.Repositories
 
         public List<LanguageDM> GetAllLangues()
         {
-            var LangDetails = _DbContext.Languages;
-            List<LanguageDM> LanguageDMList = new List<LanguageDM>();
-            foreach (var item in LangDetails)
+            try
             {
-                LanguageDM LangDM = new LanguageDM(_GlobalErrors);
-                LangDM.ID = item.ID;
-                LangDM.Name = item.Name;
-                LanguageDMList.Add(LangDM);
+                var LangDetails = _DbContext.Languages;
+                List<LanguageDM> LanguageDMList = new List<LanguageDM>();
+                foreach (var item in LangDetails)
+                {
+                    LanguageDM LangDM = new LanguageDM(_GlobalErrors);
+                    LangDM.ID = item.ID;
+                    LangDM.Name = item.Name;
+                    LanguageDMList.Add(LangDM);
+                }
+                return LanguageDMList;
             }
-            return LanguageDMList;
+            catch (Exception ex)
+            {
+                //Errors in this scope indicates system error (not validation errors)
+                //If error not handled, log it and add system error
+                if (!_GlobalErrors.ErrorHandled)
+                {
+                    _Logger.Error(ex, "Database Error: Cannot Get All Languages!");
+                    _GlobalErrors.AddSystemError("Database Error: Cannot Get All Languages!");
+                    _GlobalErrors.ErrorHandled = true;
+                }
+                throw;
+            }
         }
 
         public override LanguageDM GetById(int id)
         {
-            var Language = _DbContext.Languages.FirstOrDefault(s => s.ID == id);
-            if (Language != null)
+            try
             {
+                if (id <= 0)
+                    return null;
+                var Language = _DbContext.Languages.FirstOrDefault(s => s.ID == id);
+                if (Language != null)
+                {
 
-                LanguageDM LangDM = new LanguageDM(_GlobalErrors);
-                LangDM.ID = Language.ID;
-                LangDM.Name = Language.Name;
-                return LangDM;
-            }
-            else
+                    LanguageDM LangDM = new LanguageDM(_GlobalErrors);
+                    LangDM.ID = Language.ID;
+                    LangDM.Name = Language.Name;
+                    return LangDM;
+                }
                 return null;
-
+            }
+            catch (Exception ex)
+            {
+                //Errors in this scope indicates system error (not validation errors)
+                //If error not handled, log it and add system error
+                if (!_GlobalErrors.ErrorHandled)
+                {
+                    _Logger.Error(ex, "Database Error: Cannot Get Specific Language!");
+                    _GlobalErrors.AddSystemError("Database Error: Cannot Get Specific Language!");
+                    _GlobalErrors.ErrorHandled = true;
+                }
+                throw;
+            }
         }
 
         public override void Add(LanguageDM domain)
         {
-            Language obj = new Language();
-            obj.ID = domain.ID;
-            obj.Name = domain.Name;
+            try
+            {
+                if (domain == null || domain.ID <= 0 || string.IsNullOrWhiteSpace(domain.Name))
+                    return;
+                Language obj = new Language();
+                obj.ID = domain.ID;
+                obj.Name = domain.Name;
 
-            _DbContext.Languages.Add(obj);
-            _DbContext.SaveChanges();
-            domain.ID = obj.ID;
+                _DbContext.Languages.Add(obj);
+                _DbContext.SaveChanges();
+                domain.ID = obj.ID;
+            }
+            catch (Exception ex)
+            {
+                //Errors in this scope indicates system error (not validation errors)
+                //If error not handled, log it and add system error
+                if (!_GlobalErrors.ErrorHandled)
+                {
+                    _Logger.Error(ex, "Database Error: Cannot Add Language!");
+                    _GlobalErrors.AddSystemError("Database Error: Cannot Add Language!");
+                    _GlobalErrors.ErrorHandled = true;
+                }
+                throw;
+            }
+
         }
 
         public override void Delete(LanguageDM domain)
         {
-            var Language = _DbContext.Languages.FirstOrDefault(s => s.ID == domain.ID);
-            if (Language != null)
+            try
             {
-                _DbContext.Languages.Remove(Language);
-                _DbContext.SaveChanges();
+                if (domain == null || domain.ID <= 0 )
+                    return;
+                var Language = _DbContext.Languages.FirstOrDefault(s => s.ID == domain.ID);
+                if (Language != null)
+                {
+                    _DbContext.Languages.Remove(Language);
+                    _DbContext.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                //Errors in this scope indicates system error (not validation errors)
+                //If error not handled, log it and add system error
+                if (!_GlobalErrors.ErrorHandled)
+                {
+                    _Logger.Error(ex, "Database Error: Cannot Delete Language!");
+                    _GlobalErrors.AddSystemError("Database Error: Cannot Delete Language!");
+                    _GlobalErrors.ErrorHandled = true;
+                }
+                throw;
             }
         }
 
         public override void Update(LanguageDM domain)
         {
-            var Language = _DbContext.Languages.FirstOrDefault(s => s.ID == domain.ID);
-            if (Language != null)
+            try
             {
-                Language.ID = domain.ID;
-                Language.Name = domain.Name;
+                if (domain == null || domain.ID <= 0 || string.IsNullOrWhiteSpace(domain.Name))
+                    return;
+                var Language = _DbContext.Languages.FirstOrDefault(s => s.ID == domain.ID);
+                if (Language != null)
+                {
+                    Language.ID = domain.ID;
+                    Language.Name = domain.Name;
 
-                _DbContext.SaveChanges();
+                    _DbContext.SaveChanges();
+                }
             }
+            catch (Exception ex)
+            {
+                //Errors in this scope indicates system error (not validation errors)
+                //If error not handled, log it and add system error
+                if (!_GlobalErrors.ErrorHandled)
+                {
+                    _Logger.Error(ex, "Database Error: Cannot Update Language!");
+                    _GlobalErrors.AddSystemError("Database Error: Cannot Update Language!");
+                    _GlobalErrors.ErrorHandled = true;
+                }
+                throw;
+            }
+
         }
     }
 }
