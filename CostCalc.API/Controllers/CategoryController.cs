@@ -51,13 +51,10 @@ namespace CostCalc.API.Controllers
             {
                 var CategoryDetails = _CategoryService.GetById(id);
                 if (CategoryDetails != null)
-                {
                     return Request.CreateResponse(HttpStatusCode.OK, CategoryDetails);
-                }
                 else
-                {
-                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Category with ID = " + id.ToString() + " is not found ");
-                }
+                    return null;
+
             }
             catch (Exception ex)
             {
@@ -67,6 +64,8 @@ namespace CostCalc.API.Controllers
                 {
                     globalErrors.AddSystemError("Service Error: Cannot Get Speceific Categories!");
                     globalErrors.ErrorHandled = true;
+                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Category with ID = " + id.ToString() + " is not found ");
+
                 }
                 throw;
             }

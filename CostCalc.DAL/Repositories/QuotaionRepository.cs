@@ -14,12 +14,12 @@ namespace CostCalc.DAL.Repositories
         public QuotaionRepository(GlobalErrors globalErrors) : base(globalErrors)
         {
         }
-   
+
         public override void Add(QuotationDM domain)
         {
             try
             {
-                if (domain == null || domain.ID <= 0 || domain.FromLangID <=0 || domain.ToLangID <= 0)
+                if (domain == null || domain.FromLangID <= 0 || domain.ToLangID <= 0)
                     return;
                 Quotation obj = new Quotation();
 
@@ -55,7 +55,7 @@ namespace CostCalc.DAL.Repositories
         {
             try
             {
-                if (domain == null || domain.ID <= 0)
+                if (domain == null)
                     return;
                 QuotationDetail obj = new QuotationDetail();
 
@@ -126,22 +126,60 @@ namespace CostCalc.DAL.Repositories
             }
         }
 
-        //public List<QuotaionDetailsDM> GetAllQuotationDetails()
-        //{
-        //    var QuotationDetails = _DbContext.JobDetails;
-        //    List<QuotaionDetailsDM> QuotaionDetailsDMList = new List<QuotaionDetailsDM>();
-        //    foreach (var item in QuotationDetails)
-        //    {
-        //        QuotaionDetailsDM QuotDetailsDM = new QuotaionDetailsDM(_GlobalErrors);
-        //        QuotDetailsDM.ID = item.ID;
-        //        QuotDetailsDM.Price = item.Price;
-        //        QuotDetailsDM.StartDate = item.StartDate;
-        //        QuotDetailsDM.EndDate = item.EndDate;
-        //        QuotDetailsDM.NumberOfDays = item.NumberOfDays;
+        public List<QuotaionDetailsDM> GetAllQuotationDetails(int ID)
+        {
 
-        //        QuotaionDetailsDMList.Add(QuotDetailsDM);
-        //    }
-        //    return QuotaionDetailsDMList;
-        //}
+            var QuotationDetails = _DbContext.QuotationDetails.Where(s => s.QuotationID == ID);
+            List<QuotaionDetailsDM> QuotaionDetailsDMList = new List<QuotaionDetailsDM>();
+
+            if (QuotationDetails != null)
+            {
+                foreach (var item in QuotationDetails)
+                {
+                    QuotaionDetailsDM QuotDetailsDM = new QuotaionDetailsDM(_GlobalErrors);
+                    QuotDetailsDM.ID = item.ID;
+                    QuotDetailsDM.NumberOfDays = item.NumberOfDays;
+                    QuotDetailsDM.Price = item.Price;
+                    QuotDetailsDM.Quotaion = new QuotationDM(_GlobalErrors) { ID = item.QuotationID };
+                    QuotDetailsDM.Category = new CategoryDM(_GlobalErrors) { ID = item.CategoryID , CategoryName = item.Category.CategoryName };
+
+
+                    QuotaionDetailsDMList.Add(QuotDetailsDM);
+                }
+            }
+            return QuotaionDetailsDMList;
+        }
+
+        public QuotationDM GetQuotationStartDate(int ID)
+        {
+            try
+            {
+                if (ID <= 0)
+                    return null;
+
+                var QuotationDate = _DbContext.Quotations.FirstOrDefault(s => s.ID == ID);
+                if (QuotationDate != null)
+                {
+                    QuotationDM QuotDM = new QuotationDM(_GlobalErrors);
+                    QuotDM.ID = QuotationDate.ID;
+                    QuotDM.StartDate = QuotationDate.StartDate;
+
+                    return QuotDM;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                //Errors in this scope indicates system error (not validation errors)
+                //If error not handled, log it and add system error
+                if (!_GlobalErrors.ErrorHandled)
+                {
+                    _Logger.Error(ex, "Database Error: Cannot Get Specific Category!");
+                    _GlobalErrors.AddSystemError("Database Error: Cannot Get Specific Category!");
+                    _GlobalErrors.ErrorHandled = true;
+                }
+                throw;
+            }
+        }
     }
 }

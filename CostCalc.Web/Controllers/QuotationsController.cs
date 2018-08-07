@@ -55,35 +55,42 @@ namespace CostCalc.Web.Controllers
             LanguageService _LanguageService = new LanguageService(_GlobalErrors);
             QuotaionVM obj = new QuotaionVM();
 
-            client.PostAsJsonAsync<QuotaionVM>("Quotaion", Quot).ContinueWith((e => e.Result.EnsureSuccessStatusCode()));
+            //client.PostAsJsonAsync<QuotaionVM>("Quotaion", Quot).ContinueWith((e => e.Result.EnsureSuccessStatusCode()));
 
             var x = _QuotationService.GetQuotationForCategory(Quot.MapVM_DM());
-            obj.QuotaionDetailsVMList = x.QuotaionDetailsList?.Select(s => new QuotaionDetailsVM(s)).ToList();
-            foreach(var item in obj.QuotaionDetailsVMList)
+            //obj.QuotaionDetailsVMList = x.QuotaionDetailsList?.Select(s => new QuotaionDetailsVM(s)).ToList();
+            //foreach (var item in obj.QuotaionDetailsVMList)
+            //{
+            //    item.EndDate = x.StartDate.AddDays((double)item.NumberOfDays - 1);
+            //}
+            obj.CategoryVMList = _CategoryService.GetAllCategories()?.Select(s => new CategoryVM(s)).ToList();
+            obj.SubjectVMList = _SubjectService.GetAllSubjects()?.Select(s => new SubjectVM(s)).ToList();
+            obj.LanguageVMList = _LanguageService.GetAllLanguages()?.Select(s => new LanguageVM(s)).ToList();
+
+
+            return RedirectToAction("Details" , new { ID = x.ID });
+        }
+
+        public ActionResult Details(int ID)
+        {
+            CategoryService _CategoryService = new CategoryService(_GlobalErrors);
+            SubjectService _SubjectService = new SubjectService(_GlobalErrors);
+            LanguageService _LanguageService = new LanguageService(_GlobalErrors);
+            QuotaionVM obj = new QuotaionVM();
+
+            var QuotationDate = _QuotationService.QuotationStartDate(ID);
+            
+            obj.QuotaionDetailsVMList = _QuotationService.GetQuotationDetails(ID)?.Select(s => new QuotaionDetailsVM(s)).ToList();
+            foreach (var item in obj.QuotaionDetailsVMList)
             {
-                item.EndDate = obj.StartDate.AddDays((double)item.NumberOfDays - 1);
+                item.StartDate = QuotationDate.StartDate;
+                item.EndDate = item.StartDate.AddDays((double)item.NumberOfDays - 1);
             }
             obj.CategoryVMList = _CategoryService.GetAllCategories()?.Select(s => new CategoryVM(s)).ToList();
             obj.SubjectVMList = _SubjectService.GetAllSubjects()?.Select(s => new SubjectVM(s)).ToList();
             obj.LanguageVMList = _LanguageService.GetAllLanguages()?.Select(s => new LanguageVM(s)).ToList();
 
-            return RedirectToAction("Create");
-        }
-
-        public ActionResult Details()
-        {
-            //CategoryService _CategoryService = new CategoryService(_GlobalErrors);
-            //SubjectService _SubjectService = new SubjectService(_GlobalErrors);
-            //LanguageService _LanguageService = new LanguageService(_GlobalErrors);
-            //QuotaionVM obj = new QuotaionVM();
-
-            //obj.QuotaionDetailsVMList = _QuotationService.GetQuotationDetails() ?.Select(s => new QuotaionDetailsVM(s)).ToList();
-            //obj.CategoryVMList = _CategoryService.GetAllCategories()?.Select(s => new CategoryVM(s)).ToList();
-            //obj.SubjectVMList = _SubjectService.GetAllSubjects()?.Select(s => new SubjectVM(s)).ToList();
-            //obj.LanguageVMList = _LanguageService.GetAllLanguages()?.Select(s => new LanguageVM(s)).ToList();
-
-            //return View(obj);
-            return View();
+            return View(obj);
         }
 
 

@@ -85,7 +85,7 @@ namespace CostCalc.DAL.Repositories
         {
             try
             {
-                if (domain == null || domain.ID <= 0 || string.IsNullOrWhiteSpace(domain.CategoryName))
+                if (domain == null || string.IsNullOrWhiteSpace(domain.CategoryName))
                     return;
                 Category obj = new Category();
                 obj.ID = domain.ID;

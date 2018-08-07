@@ -50,13 +50,10 @@ namespace CostCalc.API.Controllers
             {
                 var LanguageDetails = _LanguageService.GetById(id);
                 if (LanguageDetails != null)
-                {
                     return Request.CreateResponse(HttpStatusCode.OK, LanguageDetails);
-                }
                 else
-                {
-                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Language with ID = " + id.ToString() + " is not found ");
-                }
+                    return null;
+                
             }
             catch (Exception ex)
             {
@@ -66,6 +63,8 @@ namespace CostCalc.API.Controllers
                 {
                     globalErrors.AddSystemError("Service Error: Cannot Get Specific Languages!");
                     globalErrors.ErrorHandled = true;
+                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Language with ID = " + id.ToString() + " is not found ");
+
                 }
                 throw;
             }

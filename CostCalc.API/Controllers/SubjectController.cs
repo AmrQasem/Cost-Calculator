@@ -50,13 +50,10 @@ namespace CostCalc.API.Controllers
             {
                 var SubjectDetails = _SubjectService.GetById(id);
                 if (SubjectDetails != null)
-                {
                     return Request.CreateResponse(HttpStatusCode.OK, SubjectDetails);
-                }
                 else
-                {
-                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Subject with ID = " + id.ToString() + " is not found ");
-                }
+                    return null;
+                
             }
             catch (Exception ex)
             {
@@ -66,6 +63,7 @@ namespace CostCalc.API.Controllers
                 {
                     globalErrors.AddSystemError("Database Error: Cannot Get Specific Subjects!");
                     globalErrors.ErrorHandled = true;
+                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Subject with ID = " + id.ToString() + " is not found ");
                 }
                 throw;
             }

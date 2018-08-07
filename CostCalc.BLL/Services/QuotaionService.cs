@@ -24,6 +24,8 @@ namespace CostCalc.BLL.Services
         {
             try
             {
+                if (domainModel.FromLangID == domainModel.ToLangID)
+                    throw new Exception() ;
                 CategoryService _CategorySer = new CategoryService(_GlobalErrors);
                 domainModel.StartDate = DateTime.Now;
                 _QuotaionRepo.Add(domainModel);
@@ -58,10 +60,15 @@ namespace CostCalc.BLL.Services
             }
         }
 
-        //public List<QuotaionDetailsDM> GetQuotationDetails()
-        //{
-        //    return _QuotaionRepo.GetAllQuotationDetails();
-        //}
+        public List<QuotaionDetailsDM> GetQuotationDetails(int ID)
+        {
+            return _QuotaionRepo.GetAllQuotationDetails(ID);
+        }
+
+        public QuotationDM QuotationStartDate(int ID)
+        {
+            return _QuotaionRepo.GetQuotationStartDate(ID);
+        }
 
     }
 }

@@ -80,7 +80,7 @@ namespace CostCalc.DAL.Repositories
         {
             try
             {
-                if (domain == null || domain.ID <= 0 || string.IsNullOrWhiteSpace(domain.SubjectTitle))
+                if (domain == null || string.IsNullOrWhiteSpace(domain.SubjectTitle))
                     return;
                 Subject obj = new Subject();
                 obj.ID = domain.ID;
@@ -135,7 +135,7 @@ namespace CostCalc.DAL.Repositories
         {
             try
             {
-                if (domain == null || domain.ID <= 0 || string.IsNullOrWhiteSpace(domain.Name))
+                if (domain == null || domain.ID <= 0 || string.IsNullOrWhiteSpace(domain.SubjectTitle))
                     return;
                 var Subject = _DbContext.Subjects.FirstOrDefault(s => s.ID == domain.ID);
                 if (Subject != null)
