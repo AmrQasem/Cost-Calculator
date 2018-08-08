@@ -49,6 +49,8 @@ namespace CostCalc.BLL.Services
                         obj.Quotaion = domainModel;
                         obj.AddCalculatedQuotation();
                         _QuotaionRepo.AddDetails(obj);
+
+                        // To load Quotation details in the MVC project 
                         //domainModel.QuotaionDetailsList.Add(obj);
                     }
                 }
@@ -56,6 +58,8 @@ namespace CostCalc.BLL.Services
                 else
                 {
                     CategoryDM CatObj = _CategorySer.GetById(domainModel.CategoryID);
+
+                    // To load Quotation details in the MVC project 
                     //domainModel.QuotaionDetailsList = new List<QuotaionDetailsDM>();
 
                     QuotaionDetailsDM obj = new QuotaionDetailsDM(_GlobalErrors);
@@ -64,6 +68,8 @@ namespace CostCalc.BLL.Services
                     obj.Quotaion = domainModel;
                     obj.AddCalculatedQuotation();
                     _QuotaionRepo.AddDetails(obj);
+
+                    // To load Quotation details in the MVC project 
                     //domainModel.QuotaionDetailsList.Add(obj);
                 }
 
