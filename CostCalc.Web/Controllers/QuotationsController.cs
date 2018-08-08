@@ -113,5 +113,42 @@ namespace CostCalc.Web.Controllers
             var EmployeeDetails = client.DeleteAsync("Quotation/" + ID.ToString()).Result;
             return RedirectToAction("Index");
         }
+
+
+        public ActionResult CreateRushRequest()
+        {
+            CategoryService _CategoryService = new CategoryService(_GlobalErrors);
+            SubjectService _SubjectService = new SubjectService(_GlobalErrors);
+            LanguageService _LanguageService = new LanguageService(_GlobalErrors);
+            QuotaionVM obj = new QuotaionVM();
+
+            obj.CategoryVMList = _CategoryService.GetAllCategories()?.Select(s => new CategoryVM(s)).ToList();
+            obj.SubjectVMList = _SubjectService.GetAllSubjects()?.Select(s => new SubjectVM(s)).ToList();
+            obj.LanguageVMList = _LanguageService.GetAllLanguages()?.Select(s => new LanguageVM(s)).ToList();
+
+            return View(obj);
+        }
+
+        [HttpPost]
+        public ActionResult CreateRushRequest(QuotaionVM Quot)
+        {
+            CategoryService _CategoryService = new CategoryService(_GlobalErrors);
+            SubjectService _SubjectService = new SubjectService(_GlobalErrors);
+            LanguageService _LanguageService = new LanguageService(_GlobalErrors);
+            QuotaionVM obj = new QuotaionVM();
+
+            //client.PostAsJsonAsync<QuotaionVM>("Quotaion", Quot).ContinueWith((e => e.Result.EnsureSuccessStatusCode()));
+
+            var x = _QuotationService.GetQuotationForCategory(Quot.MapVM_DM());
+
+            obj.CategoryVMList = _CategoryService.GetAllCategories()?.Select(s => new CategoryVM(s)).ToList();
+            obj.SubjectVMList = _SubjectService.GetAllSubjects()?.Select(s => new SubjectVM(s)).ToList();
+            obj.LanguageVMList = _LanguageService.GetAllLanguages()?.Select(s => new LanguageVM(s)).ToList();
+
+
+            return RedirectToAction("Details", new { ID = x.ID });
+        }
+
+
     }
 }

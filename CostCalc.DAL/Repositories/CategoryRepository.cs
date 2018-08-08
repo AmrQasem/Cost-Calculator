@@ -55,17 +55,22 @@ namespace CostCalc.DAL.Repositories
                     return null;
 
                 var Category = _DbContext.Categories.FirstOrDefault(s => s.ID == id);
+                CategoryDM CatDM = null;
                 if (Category != null)
                 {
-                    CategoryDM CatDM = new CategoryDM(_GlobalErrors);
+                    CatDM = new CategoryDM(_GlobalErrors);
                     CatDM.ID = Category.ID;
                     CatDM.CategoryName = Category.CategoryName;
                     CatDM.UnitPrice = Category.UnitPrice;
                     CatDM.WorkRate = Category.WorkRate;
-                    return CatDM;
                 }
-                return null;
-
+                else
+                {
+                    _GlobalErrors.AddValidationError("", "Can't Get Category");
+                    _GlobalErrors.ErrorHandled = true;
+                    throw new Exception();
+                }
+                return CatDM;
             }
             catch (Exception ex)
             {
@@ -123,6 +128,12 @@ namespace CostCalc.DAL.Repositories
                     _DbContext.Categories.Remove(Category);
                     _DbContext.SaveChanges();
                 }
+                else
+                {
+                    _GlobalErrors.AddValidationError("", "Can't Delete Category");
+                    _GlobalErrors.ErrorHandled = true;
+                    throw new Exception();
+                }
             }
             catch (Exception ex)
             {
@@ -152,6 +163,12 @@ namespace CostCalc.DAL.Repositories
                     Category.WorkRate = domain.WorkRate;
 
                     _DbContext.SaveChanges();
+                }
+                else
+                {
+                    _GlobalErrors.AddValidationError("", "Can't Update Category");
+                    _GlobalErrors.ErrorHandled = true;
+                    throw new Exception();
                 }
             }
             catch (Exception ex)

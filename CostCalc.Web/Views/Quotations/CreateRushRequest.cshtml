@@ -1,46 +1,17 @@
 ﻿@model CostCalc.API.DTO.QuotaionVM
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "CreateRushRequest";
 }
 
-<h2>Create</h2>
+<h2>CreateRushRequest</h2>
 
-<style>
-    #customers {
-        font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-        border-collapse: collapse;
-        width: 100%;
-    }
-
-        #customers td, #customers th {
-            border: 1px solid #ddd;
-            padding: 8px;
-        }
-
-        #customers tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-
-        #customers tr:hover {
-            background-color: #ddd;
-        }
-
-        #customers th {
-            padding-top: 12px;
-            padding-bottom: 12px;
-            text-align: left;
-            background-color: #4CAF50;
-            color: white;
-        }
-</style>
-
-@using (Html.BeginForm())
+@using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
-
+    
     <div class="form-horizontal">
-        <h4>Quotaion</h4>
+        <h4>QuotaionVM</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
@@ -68,13 +39,21 @@
             </div>
         </div>
 
-        @*<div class="form-group">
-                @Html.LabelFor(model => model.IsRush, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.IsRush, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.IsRush, "", new { @class = "text-danger" })
-                </div>
-            </div>*@
+        <div class="form-group">
+            @Html.LabelFor(model => model.IsRush, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.IsRush, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.IsRush, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.RushDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.RushDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.RushDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.SubjectID, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -86,44 +65,15 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Calculate Price" class="btn btn-default" />
+                <input type="submit" value="Create" class="btn btn-default" />
             </div>
         </div>
-        @*@if (Model.QuotaionDetailsVMList != null)
-        {
-            if (Model.QuotaionDetailsVMList.Any())
-            {
-                <div>
-                    <table id="customers">
-                        <tr>
-                            <th>Price</th>
-                            <th>Start Date</th>
-                            <th>End Date</th>
-                            <th>Number Of Days</th>
-                            <th>Category Name</th>
-                        </tr>
-                        @foreach (var item in Model.QuotaionDetailsVMList)
-                        {
-                            <tr>
-                                <td>@item.Price</td>
-                                <td>@item.StartDate</td>
-                                <td>@item.EndDate</td>
-                                <td>@item.NumberOfDays</td>
-                                <td>@item.CategoryName</td>
-                            </tr>
-                        }
-
-                    </table>
-                </div>
-            }
-        }*@
     </div>
 }
 
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
-
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }

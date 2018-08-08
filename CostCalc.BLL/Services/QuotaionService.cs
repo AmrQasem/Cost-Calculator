@@ -25,23 +25,46 @@ namespace CostCalc.BLL.Services
             try
             {
                 if (domainModel.FromLangID == domainModel.ToLangID)
-                    throw new Exception() ;
+                {
+                    _GlobalErrors.AddValidationError("", "From language equla Tatrget language");
+                    _GlobalErrors.ErrorHandled = true;
+                    throw new Exception();
+                }
                 CategoryService _CategorySer = new CategoryService(_GlobalErrors);
                 domainModel.StartDate = DateTime.Now;
                 _QuotaionRepo.Add(domainModel);
 
-                domainModel.CategoryDMList = _CategorySer.GetAllCategories();
-                domainModel.QuotaionDetailsList = new List<QuotaionDetailsDM>();
-
-                foreach (var item in domainModel.CategoryDMList)
+                if (domainModel.CategoryID == null)
                 {
+                    domainModel.CategoryDMList = _CategorySer.GetAllCategories();
+
+                    // to load Quotation details in the MVC project 
+                    //domainModel.QuotaionDetailsList = new List<QuotaionDetailsDM>();
+
+                    foreach (var item in domainModel.CategoryDMList)
+                    {
+                        QuotaionDetailsDM obj = new QuotaionDetailsDM(_GlobalErrors);
+
+                        obj.Category = item;
+                        obj.Quotaion = domainModel;
+                        obj.AddCalculatedQuotation();
+                        _QuotaionRepo.AddDetails(obj);
+                        //domainModel.QuotaionDetailsList.Add(obj);
+                    }
+                }
+
+                else
+                {
+                    CategoryDM CatObj = _CategorySer.GetById(domainModel.CategoryID);
+                    //domainModel.QuotaionDetailsList = new List<QuotaionDetailsDM>();
+
                     QuotaionDetailsDM obj = new QuotaionDetailsDM(_GlobalErrors);
 
-                    obj.Category = item;
+                    obj.Category = CatObj;
                     obj.Quotaion = domainModel;
                     obj.AddCalculatedQuotation();
                     _QuotaionRepo.AddDetails(obj);
-                    domainModel.QuotaionDetailsList.Add(obj);
+                    //domainModel.QuotaionDetailsList.Add(obj);
                 }
 
                 return domainModel;
@@ -62,12 +85,42 @@ namespace CostCalc.BLL.Services
 
         public List<QuotaionDetailsDM> GetQuotationDetails(int ID)
         {
-            return _QuotaionRepo.GetAllQuotationDetails(ID);
+            try
+            {
+                return _QuotaionRepo.GetAllQuotationDetails(ID);
+            }
+            catch (Exception ex)
+            {
+                //Errors in this scope indicates system error (not validation errors)
+                //If error exist but not handled, log it and add system error
+                if (!_GlobalErrors.ErrorHandled)
+                {
+                    _Logger.Error(ex, "Service Error: Cannot Request Quotation!");
+                    _GlobalErrors.AddSystemError("Service Error: Cannot Request Quotation!");
+                    _GlobalErrors.ErrorHandled = true;
+                }
+                throw;
+            }
         }
 
         public QuotationDM QuotationStartDate(int ID)
         {
-            return _QuotaionRepo.GetQuotationStartDate(ID);
+            try
+            {
+                return _QuotaionRepo.GetQuotationStartDate(ID);
+            }
+            catch (Exception ex)
+            {
+                //Errors in this scope indicates system error (not validation errors)
+                //If error exist but not handled, log it and add system error
+                if (!_GlobalErrors.ErrorHandled)
+                {
+                    _Logger.Error(ex, "Service Error: Cannot Request Quotation!");
+                    _GlobalErrors.AddSystemError("Service Error: Cannot Request Quotation!");
+                    _GlobalErrors.ErrorHandled = true;
+                }
+                throw;
+            }
         }
 
     }

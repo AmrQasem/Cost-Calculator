@@ -113,8 +113,18 @@ namespace CostCalc.DAL.Repositories
                 var Subject = _DbContext.Subjects.FirstOrDefault(s => s.ID == domain.ID);
                 if (Subject != null)
                 {
-                    _DbContext.Subjects.Remove(Subject);
-                    _DbContext.SaveChanges();
+                    if (Subject.ID != 1)
+                    {
+
+                        _DbContext.Subjects.Remove(Subject);
+                        _DbContext.SaveChanges();
+                    }
+                    else
+                    {
+                        _GlobalErrors.AddValidationError("", "You Can't Delete General Subject");
+                        _GlobalErrors.ErrorHandled = true;
+                        throw new Exception();
+                    }
                 }
             }
             catch (Exception ex)
@@ -140,10 +150,19 @@ namespace CostCalc.DAL.Repositories
                 var Subject = _DbContext.Subjects.FirstOrDefault(s => s.ID == domain.ID);
                 if (Subject != null)
                 {
-                    Subject.ID = domain.ID;
-                    Subject.SubjectTitle = domain.SubjectTitle;
+                    if (Subject.ID != 1)
+                    {
+                        Subject.ID = domain.ID;
+                        Subject.SubjectTitle = domain.SubjectTitle;
 
-                    _DbContext.SaveChanges();
+                        _DbContext.SaveChanges();
+                    }
+                    else
+                    {
+                        _GlobalErrors.AddValidationError("", "You Can't Update General Subject");
+                        _GlobalErrors.ErrorHandled = true;
+                        throw new Exception();
+                    }
                 }
             }
             catch (Exception ex)

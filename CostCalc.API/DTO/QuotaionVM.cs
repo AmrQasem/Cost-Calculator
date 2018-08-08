@@ -27,6 +27,7 @@ namespace CostCalc.API.DTO
         public List<CategoryVM> CategoryVMList { get; set; }
         public List<QuotaionDetailsVM> QuotaionDetailsVMList { get; set; }
         public DateTime StartDate { get; set; }
+        public int? CategoryID { get; set; }
 
 
 
@@ -45,6 +46,7 @@ namespace CostCalc.API.DTO
             RushDate = Quotaion.RushDate;
             SubjectID = Quotaion.Subject.ID;
             StartDate = Quotaion.StartDate;
+            CategoryID = Quotaion.CategoryID;
         }
 
         public QuotationDM MapVM_DM()
@@ -60,6 +62,7 @@ namespace CostCalc.API.DTO
             obj.RushDate = RushDate;
             obj.Subject = new SubjectDM(globalErrors) { ID = SubjectID };
             obj.StartDate = StartDate;
+            obj.CategoryID = CategoryID;
 
             return obj;
         }

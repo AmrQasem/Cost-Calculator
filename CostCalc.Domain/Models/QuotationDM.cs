@@ -26,6 +26,8 @@ namespace CostCalc.Domain.Models
         public SubjectDM Subject { get; set; }
         public List<CategoryDM> CategoryDMList { get; set; }
         public DateTime StartDate { get; set; }
+        public int? CategoryID { get; set; }
+
 
 
 

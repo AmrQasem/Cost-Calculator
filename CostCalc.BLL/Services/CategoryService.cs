@@ -39,11 +39,11 @@ namespace CostCalc.BLL.Services
             }
         }
 
-        public CategoryDM GetById(int id)
+        public CategoryDM GetById(int? id)
         {
             try
             {
-                return _CategoryRepo.GetById(id);
+                return _CategoryRepo.GetById(id.Value);
             }
             catch (Exception ex)
             {

@@ -11,7 +11,7 @@ using CostCalc.API.DTO;
 
 namespace CostCalc.API.Controllers
 {
-    public class CategoryController : ApiController
+    public class CategoryController : BaseApiController
     {
 
         GlobalErrors globalErrors = new GlobalErrors();
@@ -62,11 +62,13 @@ namespace CostCalc.API.Controllers
                 //If error exist but not handled, log it and add system error
                 if (!globalErrors.ErrorHandled)
                 {
+                    _Logger.Error("");
                     globalErrors.AddSystemError("Service Error: Cannot Get Speceific Categories!");
                     globalErrors.ErrorHandled = true;
                     return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Category with ID = " + id.ToString() + " is not found ");
 
                 }
+
                 throw;
             }
         }
@@ -77,6 +79,7 @@ namespace CostCalc.API.Controllers
         {
             try
             {
+                //if (ModelState.IsValid) { }
                 _CategoryService.Add(domain.MapVM_DM());
                 var msg = Request.CreateResponse(HttpStatusCode.Created, domain);
                 msg.Headers.Location = new Uri(Request.RequestUri + "/" + domain.ID.ToString());

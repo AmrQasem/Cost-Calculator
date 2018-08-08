@@ -113,8 +113,18 @@ namespace CostCalc.DAL.Repositories
                 var Language = _DbContext.Languages.FirstOrDefault(s => s.ID == domain.ID);
                 if (Language != null)
                 {
-                    _DbContext.Languages.Remove(Language);
-                    _DbContext.SaveChanges();
+                    if(Language.ID != 1)
+                    {
+                        _DbContext.Languages.Remove(Language);
+                        _DbContext.SaveChanges();
+                    }
+                    else
+                    {
+                        _GlobalErrors.AddValidationError("", "You Can't Update English ");
+                        _GlobalErrors.ErrorHandled = true;
+                        throw new Exception();
+                    }
+
                 }
             }
             catch (Exception ex)
@@ -140,10 +150,20 @@ namespace CostCalc.DAL.Repositories
                 var Language = _DbContext.Languages.FirstOrDefault(s => s.ID == domain.ID);
                 if (Language != null)
                 {
-                    Language.ID = domain.ID;
-                    Language.Name = domain.Name;
+                    if (Language.ID != 1)
+                    {
+                        Language.ID = domain.ID;
+                        Language.Name = domain.Name;
 
-                    _DbContext.SaveChanges();
+                        _DbContext.SaveChanges();
+                    }
+                    else
+                    {
+                        _GlobalErrors.AddValidationError("", "You Can't Update English ");
+                        _GlobalErrors.ErrorHandled = true;
+                        throw new Exception();
+                    }
+
                 }
             }
             catch (Exception ex)

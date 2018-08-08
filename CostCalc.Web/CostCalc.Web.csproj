@@ -277,6 +277,7 @@
     <Content Include="Views\Quotations\Create.cshtml" />
     <Content Include="Views\Quotations\Index.cshtml" />
     <Content Include="Views\Quotations\Details.cshtml" />
+    <Content Include="Views\Quotations\CreateRushRequest.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
