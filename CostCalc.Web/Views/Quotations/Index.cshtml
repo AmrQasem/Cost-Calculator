@@ -1,0 +1,24 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<input type="submit" value="Calculate Price" class="btn btn-default" />
+
+<div id="Hidddee" style="display:none">
+    <p>asdasd</p>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+
+        $("input").click(function () {
+            $("#Hidddee").show("slow");
+
+            $("#Hidddee").hide("slow");
+        });
+    </script>
+}

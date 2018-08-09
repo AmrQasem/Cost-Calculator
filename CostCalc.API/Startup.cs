@@ -4,7 +4,7 @@ using System.Linq;
 using Microsoft.Owin;
 using Owin;
 
-[assembly: OwinStartup(typeof(CostCalc.API.Startup))]
+//[assembly: OwinStartup(typeof(CostCalc.API.Startup))]
 
 namespace CostCalc.API
 {

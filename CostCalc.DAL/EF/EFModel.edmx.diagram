@@ -5,12 +5,16 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="8cc6db92649d46e386340ee384d61db7" Name="Diagram1">
-        <EntityTypeShape EntityType="CostCalculatorDBModel.Category" Width="1.5" PointX="0.75" PointY="5.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="CostCalculatorDBModel.Job" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="CostCalculatorDBModel.Language" Width="1.5" PointX="0.75" PointY="1.875" IsExpanded="true" />
-        <AssociationConnector Association="CostCalculatorDBModel.FK_Jobs_Categories" ManuallyRouted="false" />
-        <AssociationConnector Association="CostCalculatorDBModel.FK_Jobs_LangFrom" ManuallyRouted="false" />
-        <AssociationConnector Association="CostCalculatorDBModel.FK_Jobs_LangsTo" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="CostCalculatorDBModel.Category" Width="1.5" PointX="3" PointY="5.625" />
+        <EntityTypeShape EntityType="CostCalculatorDBModel.Language" Width="1.5" PointX="0.75" PointY="1.75" />
+        <EntityTypeShape EntityType="CostCalculatorDBModel.Quotation" Width="1.5" PointX="3" PointY="1" />
+        <EntityTypeShape EntityType="CostCalculatorDBModel.QuotationDetail" Width="1.5" PointX="5.25" PointY="1.5" />
+        <EntityTypeShape EntityType="CostCalculatorDBModel.Subject" Width="1.5" PointX="0.75" PointY="5.875" />
+        <AssociationConnector Association="CostCalculatorDBModel.FK_JobDetails_Categories" />
+        <AssociationConnector Association="CostCalculatorDBModel.FK_Quotation_Languages" />
+        <AssociationConnector Association="CostCalculatorDBModel.FK_Quotation_Languages1" />
+        <AssociationConnector Association="CostCalculatorDBModel.FK_Quotation_Subjects" />
+        <AssociationConnector Association="CostCalculatorDBModel.FK_QuotationDetails_Quotation" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

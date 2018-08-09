@@ -1,0 +1,93 @@
+﻿@model CostCalc.API.DTO.QuotaionVM
+
+@{
+    ViewBag.Title = "Details";
+}
+
+
+<h2>Quotation Details</h2>
+
+<style>
+    #customers {
+        font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+        #customers td, #customers th {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        #customers tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        #customers tr:hover {
+            background-color: #ddd;
+        }
+
+        #customers th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #4CAF50;
+            color: white;
+        }
+</style>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Quotaion Details</h4>
+        <hr />
+        @if (Model.QuotaionDetailsVMList != null)
+        {
+            if (Model.QuotaionDetailsVMList.Any())
+            {
+                <div>
+                    <table id="customers">
+                        <tr>
+                            <th>Price</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Number Of Days</th>
+                            <th>Category Name</th>
+                        </tr>
+                        @foreach (var item in Model.QuotaionDetailsVMList)
+                        {
+                            <tr>
+                                <td>@item.Price</td>
+                                <td>@item.StartDate</td>
+                                <td>@item.EndDate</td>
+                                <td>@item.NumberOfDays</td>
+                                <td>@item.CategoryName</td>
+                            </tr>
+                        }
+
+                    </table>
+                </div>
+            }
+        }
+        <div id="Hidddee" style="display:none">
+            <p>asdasd</p>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $("input").click(function () {
+            $("#Hidddee").show("slow");
+        });
+    </script>
+
+
+}

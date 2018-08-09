@@ -12,21 +12,27 @@ namespace CostCalc.DAL.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class Job
+    public partial class Quotation
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Quotation()
+        {
+            this.QuotationDetails = new HashSet<QuotationDetail>();
+        }
+    
         public int ID { get; set; }
         public int FromLangID { get; set; }
         public int ToLangID { get; set; }
         public decimal WordCount { get; set; }
-        public int CategoryID { get; set; }
-        public decimal Price { get; set; }
         public string IP_Address { get; set; }
+        public Nullable<bool> IsRush { get; set; }
+        public int SubjectID { get; set; }
         public System.DateTime StartDate { get; set; }
-        public System.DateTime EndDate { get; set; }
-        public decimal NumberOfDays { get; set; }
     
-        public virtual Category Category { get; set; }
         public virtual Language Language { get; set; }
         public virtual Language Language1 { get; set; }
+        public virtual Subject Subject { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<QuotationDetail> QuotationDetails { get; set; }
     }
 }

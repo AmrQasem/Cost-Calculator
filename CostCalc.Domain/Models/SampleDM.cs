@@ -14,7 +14,7 @@ namespace CostCalc.Domain.Models
 
         public SampleDM(int id, GlobalErrors globalErrors) : base(globalErrors)
         {
-            Id = id;
+            //Id = id;
         }
 
         public SampleDM(GlobalErrors globalErrors) : base(globalErrors)
