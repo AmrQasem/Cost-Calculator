@@ -90,8 +90,8 @@ namespace CostCalc.DAL.Repositories
         {
             try
             {
-                if (domain == null || string.IsNullOrWhiteSpace(domain.CategoryName))
-                    return;
+                if (domain == null || string.IsNullOrWhiteSpace(domain.CategoryName) || domain.WorkRate == 0 || domain.UnitPrice == 0)
+                    throw new Exception();
                 Category obj = new Category();
                 obj.ID = domain.ID;
                 obj.CategoryName = domain.CategoryName;
@@ -120,7 +120,7 @@ namespace CostCalc.DAL.Repositories
         {
             try
             {
-                if (domain == null || domain.ID <= 0)
+                if (domain.ID <= 0)
                     return;
                 var Category = _DbContext.Categories.FirstOrDefault(s => s.ID == domain.ID);
                 if (Category != null)

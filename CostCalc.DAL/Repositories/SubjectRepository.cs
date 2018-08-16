@@ -108,7 +108,7 @@ namespace CostCalc.DAL.Repositories
         {
             try
             {
-                if (domain == null || domain.ID <= 0)
+                if ( domain.ID <= 0)
                     return;
                 var Subject = _DbContext.Subjects.FirstOrDefault(s => s.ID == domain.ID);
                 if (Subject != null)

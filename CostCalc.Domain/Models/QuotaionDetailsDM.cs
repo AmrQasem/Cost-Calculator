@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CostCalc.Helper.ExceptionHandling;
 using System.Net;
+using System.Data.Sql;
 
 namespace CostCalc.Domain.Models
 {
@@ -13,7 +14,7 @@ namespace CostCalc.Domain.Models
         public QuotaionDetailsDM(GlobalErrors globalErrors) : base(globalErrors)
         {
             Ratio = 0.02;
-            IsRush = false;
+            //IsRush = false;
             RushRatio = 0.1;
             SubjectRatio = 0.1;
         }
@@ -26,7 +27,6 @@ namespace CostCalc.Domain.Models
         public decimal Price { get; set; }
         public decimal NumberOfDays { get; set; }
         public double Ratio { get; set; }
-        public bool? IsRush { get; set; }
         public double RushRatio { get; set; }
         public double SubjectRatio { get; set; }
         public decimal NumberOfRushDays { get; set; }
@@ -47,7 +47,7 @@ namespace CostCalc.Domain.Models
 
                 CalcPrice(Quotaion.WordCount, Quotaion.ToLangID);
             }
-            else if (IsRush == true || Quotaion.RushDate != null)
+            else if (Quotaion.IsRush == true || Quotaion.RushDate != null)
             {
                 NumberOfDays = Quotaion.WordCount / Category.WorkRate;
                 EndDate = StartDate.AddDays((double)NumberOfDays - 1);

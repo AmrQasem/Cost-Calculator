@@ -96,7 +96,6 @@ namespace CostCalc.BLL.Services
                 }
                 throw;
             }
-            _CategoryRepo.Delete(domain);
         }
 
         public void Update(CategoryDM domain)
