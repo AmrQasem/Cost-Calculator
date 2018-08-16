@@ -108,7 +108,7 @@ namespace CostCalc.DAL.Repositories
         {
             try
             {
-                if (domain == null || domain.ID <= 0 )
+                if (domain.ID <= 0 )
                     return;
                 var Language = _DbContext.Languages.FirstOrDefault(s => s.ID == domain.ID);
                 if (Language != null)

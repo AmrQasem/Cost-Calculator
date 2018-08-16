@@ -64,8 +64,9 @@ namespace CostCalc.API.Controllers
                     globalErrors.AddSystemError("Service Error: Cannot Get Specific Languages!");
                     globalErrors.ErrorHandled = true;
                     return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Language with ID = " + id.ToString() + " is not found ");
-
                 }
+                else
+                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Language with ID = " + id.ToString() + " is not found ");
                 throw;
             }
         }
@@ -117,8 +118,10 @@ namespace CostCalc.API.Controllers
                 {
                     globalErrors.AddSystemError("Service Error: Cannot Update Languages!");
                     globalErrors.ErrorHandled = true;
-                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, ex);
                 }
+                else
+                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, ex);
                 throw;
             }
         }
@@ -141,8 +144,10 @@ namespace CostCalc.API.Controllers
                 {
                     globalErrors.AddSystemError("Service Error: Cannot Delete Languages!");
                     globalErrors.ErrorHandled = true;
-                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, ex);
                 }
+                else
+                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, ex);
                 throw;
             }
         }

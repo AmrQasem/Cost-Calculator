@@ -65,6 +65,8 @@ namespace CostCalc.API.Controllers
                     globalErrors.ErrorHandled = true;
                     return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Subject with ID = " + id.ToString() + " is not found ");
                 }
+                else
+                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Subject with ID = " + id.ToString() + " is not found ");
                 throw;
             }
         }
@@ -115,8 +117,10 @@ namespace CostCalc.API.Controllers
                 {
                     globalErrors.AddSystemError("Database Error: Cannot Update Subjects!");
                     globalErrors.ErrorHandled = true;
-                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, ex);
                 }
+                else
+                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, ex);
                 throw;
             }
         }
@@ -139,8 +143,10 @@ namespace CostCalc.API.Controllers
                 {
                     globalErrors.AddSystemError("Database Error: Cannot Delete Subjects!");
                     globalErrors.ErrorHandled = true;
-                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, ex);
                 }
+                else
+                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, ex);
                 throw;
             }
         }
